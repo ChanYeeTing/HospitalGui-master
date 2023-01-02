@@ -3,7 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 public class HospitalGUI extends JFrame implements ActionListener{
-    
+
+
 JPanel p,p1,p2,p3,p4;
     
 JLabel l1,l2,l3,l4,l5,l6,l7;
@@ -13,10 +14,9 @@ JList list1;
 
 JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 
+JButton b1,b2,b3,b4,b5,b6;
 
- JButton b1,b2,b3,b4,b5,b6;
- 
- JComboBox c1;
+JComboBox c1;
  
  String a[]={"Surgeon","Pediatrician","Psychiatrist","Cardiologist","Dermatologist"};
 
@@ -78,7 +78,8 @@ JTextField tf1,tf2,tf3,tf4,tf5,tf6;
     }
 
     public static void main(String[] args) {
-        new  HospitalGUI();
+
+        new  Login();
     }
 
     @Override
