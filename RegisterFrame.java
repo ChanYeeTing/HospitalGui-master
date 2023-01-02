@@ -252,15 +252,18 @@ public class RegisterFrame extends JFrame implements ActionListener {
             String PNumber = tf5.getText().trim();
             if (!PNumber.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Phone Number Only Accept Number");
+                return;
             }
             String Address = tf6.getText();
             String Height = tf7.getText().trim();
             if (!Height.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Height Only Accept Number");
+                return;
             }
             String Weight = tf8.getText().trim();
             if (!Weight.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Weight Only Accept Number");
+                return;
             }
 
             String Allergic;
@@ -289,7 +292,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 
             try {
                 FileWriter fw = new FileWriter("login.txt",true);
-                fw.write(Account+"\t"+password1);
+                fw.write(Account+"\t"+password1+"\n");
                 fw.close();
 
                 FileWriter fw2 = new FileWriter(Account+".txt",true);
