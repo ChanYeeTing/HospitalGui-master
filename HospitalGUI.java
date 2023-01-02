@@ -1,6 +1,8 @@
 package hospitalgui;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import javax.swing.*;
 public class HospitalGUI extends JFrame implements ActionListener{
 
@@ -17,7 +19,8 @@ JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 JButton b1,b2,b3,b4,b5,b6;
 
 JComboBox c1;
- 
+
+
  String a[]={"Surgeon","Pediatrician","Psychiatrist","Cardiologist","Dermatologist"};
 
     public  HospitalGUI(){
@@ -26,7 +29,7 @@ JComboBox c1;
          this.setSize(1100,300);
          this.setTitle("HospitalGUI");
          this.setVisible(true);
-         this.setLocation(200,200);
+         this.setLocation(120,100);
          this.setBackground(Color.DARK_GRAY);
         
         
@@ -49,7 +52,7 @@ JComboBox c1;
         
         p2 =new JPanel();
         p2.setLayout(new FlowLayout(FlowLayout.CENTER,40,40));
-        b1=new JButton("View Your Account");
+        b1=new JButton("Account Information");
         b1.addActionListener(this);
         b2=new JButton("Hospital Departments");
         b2.addActionListener(this);
@@ -82,25 +85,29 @@ JComboBox c1;
         new  Login();
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         
          if(e.getSource()==b1){
-             
-            p4.removeAll();
-             view1();
-         p4.setVisible(true);
+           this.dispose();
+           new PatientInfo();
+
          }else if(e.getSource()==b4){
               p4.removeAll();
               view2();
                p4.setVisible(true);
-         }else if(e.getSource()==b5){
-             if(" ".equals(tf1.getText())){
-              JOptionPane.showMessageDialog(this,"account not submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
-             }else{
-                 JOptionPane.showMessageDialog(this,"account submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
-             }
-         }else if(e.getSource()==b6){
+         }
+//         else if(e.getSource()==b5){
+//             if(" ".equals(tf1.getText())){
+//              JOptionPane.showMessageDialog(this,"account not submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
+//             }
+//             else{
+//                 JOptionPane.showMessageDialog(this,"account submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
+//             }
+//         }
+         else if(e.getSource()==b6){
               JOptionPane.showMessageDialog(this,"doctor is not found","confirmation", JOptionPane.PLAIN_MESSAGE);
          }else if(e.getSource()==b2){
               p4.removeAll();
@@ -116,7 +123,7 @@ JComboBox c1;
     
         public void view1(){
             
-             p4.setLayout(new GridLayout(3,4));
+        p4.setLayout(new GridLayout(3,4));
          
          l2=new JLabel("   first name");
          tf1=new JTextField(5);

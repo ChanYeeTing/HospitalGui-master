@@ -5,8 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.event.ActionListener;
 
 public class Login extends JFrame implements ActionListener {
@@ -89,7 +87,7 @@ public class Login extends JFrame implements ActionListener {
         if(e.getSource() == b1)
         {
             boolean matched = false;
-            String account = tf1.getText();
+            String account = tf1.getText().trim();
             String password = new String(pf1.getPassword());
 
             try {
@@ -108,6 +106,7 @@ public class Login extends JFrame implements ActionListener {
             if(matched)
             {
                 JOptionPane.showMessageDialog(this, "Login Successful");
+                PatientInfo.account = account;
                 this.dispose();
                 new HospitalGUI();
             }

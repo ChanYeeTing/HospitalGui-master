@@ -293,9 +293,9 @@ public class RegisterFrame extends JFrame implements ActionListener {
                 fw.close();
 
                 FileWriter fw2 = new FileWriter(Account+".txt",true);
-                fw2.write(FName+"\t"+LName+"\t"+Gender+"\t"
-                        +Email+"\t"+PNumber+"\t"+Address+"\t"+Height+"\t"+Weight+"\t"+Allergic+"\t"+
-                        Allergen+"\t"+Blood);
+                fw2.write(FName+"\n"+LName+"\n"+Gender+"\n"
+                        +Email+"\n"+PNumber+"\n"+Address+"\n"+Height+"\n"+Weight+"\n"+Allergic+"\n"+
+                        Allergen+"\n"+Blood);
                 fw2.close();
 
                 JOptionPane.showMessageDialog(this, Account + " Successfully Registered");
