@@ -2,8 +2,12 @@ package hospitalgui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 //MakeAppointment class
@@ -57,10 +61,34 @@ class MakeAppointment {
 
     //Arrays
     static String doctor [] = {"Ali", "James", "Sarah", "Mary Jane"};//doctor name array
+    static String dayTypeArr [] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};//day type array
+
+
+    //function to get number of days at specific month
+    public static int getNumOfDays(int monthInt, int yearInt)
+    {
+        //compute extra day for February
+        int febExtra = 0;
+        if(yearInt % 4 == 0)
+            febExtra = 1;
+
+        //array of number of days in each month
+        int numDay[] = {31, 28 + febExtra , 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        return numDay[monthInt -1];
+    }
+
+    //function to get day name, example: "SUNDAY"
+    public static String getDayName (String date) throws ParseException {
+        Date sdf = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        Format f = new SimpleDateFormat("EE");
+        String str = f.format(sdf);
+        return str;
+    }
 
 
     //function that buildP2
-    public static void buildP2(String date) {
+    public static void buildP2(String date) throws ParseException {
         selectedDate = date;
 
         //p2 for header of slot table
@@ -72,12 +100,57 @@ class MakeAppointment {
         //initialize l2[0]
         l2 = new JLabel[6];
         l2[0] = new JLabel("Start Time");
+        l2[0].setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 
         //add l2[0] to p2Div[0] to p2 to p
         p2Div = new JPanel[6];
         p2Div[0] = new JPanel();
         p2Div[0].add(l2[0]);
         p2.add(p2Div[0]);
+
+
+
+        //get starting dayTypeArr index
+        int dayTypeIndex = 0;
+        String dayName = getDayName(date);
+        for(int j = 0; j < dayTypeArr.length; j++)
+        {
+            if(dayName.equals(dayTypeArr[j])) {
+                dayTypeIndex = j;
+                break;
+            }
+        }
+
+
+
+        //get the day, month, year of date selected
+        dateArr = date.split("/");
+        int day = selectedDay = Integer.parseInt(dateArr[0]);
+        int month = selectedMonth = Integer.parseInt(dateArr[1]);
+        int year = selectedYear = Integer.parseInt(dateArr[2]);
+
+        //get number of days in current month
+        int numDays = getNumOfDays(month, year);
+
+        //use for loop to initialize remaining l2 element and set their values to day type and day of the month for the consecutive 5 days
+        for(int i = 1 ; i < p2Div.length; i++) {
+            l2[i] = new JLabel();
+            l2[i].setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+            l2[i].setText(dayTypeArr[dayTypeIndex] + ", " + day);
+
+            p2Div[i] = new JPanel();
+            p2Div[i].add(l2[i]);
+
+            dayTypeIndex++;
+            if(dayTypeIndex >= 7)
+                dayTypeIndex = 0;
+
+            day++;
+            if(day > numDays)
+                day = 1;
+
+            p2.add(p2Div[i]);
+        }
         p.add(p2);
     }
 
@@ -107,7 +180,7 @@ class MakeAppointment {
 
 
     //Constructor
-    public MakeAppointment() {
+    public MakeAppointment() throws ParseException {
         //create new frame
         f= new JFrame("Make Appointment");
 

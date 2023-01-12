@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.text.ParseException;
 import javax.swing.*;
 public class HospitalGUI extends JFrame implements ActionListener{
 
@@ -123,7 +124,11 @@ JComboBox c1;
          }else if(e.getSource() == b7)
          {
              this.dispose();
-             new MakeAppointment();
+             try {
+                 new MakeAppointment();
+             } catch (ParseException ex) {
+                 throw new RuntimeException(ex);
+             }
          }
     }
        
