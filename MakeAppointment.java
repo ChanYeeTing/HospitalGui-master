@@ -2,6 +2,8 @@ package hospitalgui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -256,6 +258,12 @@ class MakeAppointment {
         dateButton.setPreferredSize(new Dimension(200, 25));
         dateButton.setFont(new Font(Font.DIALOG, Font.PLAIN, 25));
         dateButton.setText(selectedDay + "/" + selectedMonth + "/" + selectedYear);
+        dateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DateSelectionUI();
+            }
+        });
 
 
         //initialize doctorList
