@@ -180,6 +180,8 @@ class MakeAppointment {
 
     //function that buildP3
     public static void buildP3(){
+        buildL3Array();
+
         //initialize p3
         p3 = new JPanel();
         p3.setLayout(new GridLayout(numOfRows,6));//36 x 6 dimension
@@ -198,6 +200,7 @@ class MakeAppointment {
                     p3Div[i][j].setBackground(new Color(77, 196, 236));
                 p3.add(p3Div[i][j]);
             }
+            p3Div[i][0].add(l3[i]);
         }
         p.add(p3);
     }
