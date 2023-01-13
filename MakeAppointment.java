@@ -32,6 +32,7 @@ class MakeAppointment {
     static JLabel p1Div1Label;//label for Doctor Name
     static JLabel instructionLabel;//label for instructions to user
     static JLabel l2[];//labels for each p2Div in p2
+    static JLabel l3[];//labels for column Start Time
 
     //JButton
     static JButton dateButton;//button what will let user choose starting date
@@ -153,6 +154,29 @@ class MakeAppointment {
         }
         p.add(p2);
     }
+
+    //function to build up the array of string to be used in labels of Start Time
+    public static void buildL3Array()
+    {
+        int min = 0;
+        int hour = 9;
+        l3 = new JLabel[36];
+        for(int i = 0; i < l3.length; i++)
+        {
+            l3[i] = new JLabel();
+            if(min == 0){
+                l3[i].setText(hour + ":00");
+            }else
+                l3[i].setText(hour + ":" + min);
+            min+=15;
+            if(min == 60)
+            {
+                min = 0;
+                hour++;
+            }
+        }
+    }
+
 
     //function that buildP3
     public static void buildP3(){
