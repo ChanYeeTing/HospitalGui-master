@@ -35,6 +35,7 @@ public class DateSelectionUI {
     static int monthSelected;//store month selected
     static int yearSelected;//store year selected
     static int day1DayTypeArrIndex;//store the index of dayTypeArr which the value is the day type of first day of month
+    static int displacementAccumulator;//accumulate the displacement needed, the value used to determine location of button in calendar
     static String dateSelected;//store date selectec
     static LocalDate myDateObj = LocalDate.now();//date object
 
@@ -97,12 +98,28 @@ public class DateSelectionUI {
         bPreviousMonth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //update the month and year
                 monthSelected--;
                 if (monthSelected <= 0) {
                     monthSelected = 12;
                     yearSelected--;
                 }
+
+                //every time move to previous month set default day selected is 1
+                daySelected = 1;
+
+                //reset monthLabel
                 monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+
+                //get number of days and displacement needed to rebuild p2
+                int numDays = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+                int displacement = numDays;
+
+                //rebuild p2
+                p2.setVisible(false);
+                buildP2(numDays, -displacement);
+                f.add(p2);
+                f.add(p1);
             }
         });
 
@@ -117,12 +134,30 @@ public class DateSelectionUI {
         bNextMonth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //get the displacement needed to rebuild p2
+                int displacement = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+
+                //update the month and year
                 monthSelected++;
                 if (monthSelected > 12) {
                     monthSelected = 1;
                     yearSelected++;
                 }
+
+                //every time move to next month set default day selected is 1
+                daySelected = 1;
+
+                //reset monthLabel
                 monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+
+                //get number of days needed to rebuild p2
+                int numDays = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+
+                //rebuild p2
+                p2.setVisible(false);
+                buildP2(numDays, displacement);
+                f.add(p2);
+                f.add(p1);
             }
         });
 
@@ -143,7 +178,7 @@ public class DateSelectionUI {
     }
 
 
-    public static void buildP2(int numDays) {
+    public static void buildP2(int numDays, int displacement) {
         //get dateSelected in day/month/year format
         dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
 
@@ -193,6 +228,15 @@ public class DateSelectionUI {
             day1DayTypeArrIndex += 7;
 
 
+        //accumulate the displacement
+        displacementAccumulator += (displacement % 7);
+        if ((day1DayTypeArrIndex + displacementAccumulator) > 6)
+            displacementAccumulator -= 7;
+        if((day1DayTypeArrIndex + displacementAccumulator) < 0)
+            displacementAccumulator += 7;
+
+
+
 
         //create the button with amount same as number of day in that month
         b = new JButton[numDays];
@@ -210,7 +254,7 @@ public class DateSelectionUI {
                 b[i].setBackground(new Color(46, 172, 221));
             b[i].setFont(new Font("Arial", Font.PLAIN, 20));
 
-            p2Div[day1DayTypeArrIndex + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
+            p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
         }
 
     }
@@ -233,7 +277,7 @@ public class DateSelectionUI {
 
 
         int numDaysThisMonth = MakeAppointment.getNumOfDays(myDateObj.getMonthValue(),myDateObj.getYear());
-        buildP2(numDaysThisMonth);
+        buildP2(numDaysThisMonth, 0);
 
     }
 }
