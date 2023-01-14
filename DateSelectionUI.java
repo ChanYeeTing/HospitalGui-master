@@ -59,9 +59,9 @@ public class DateSelectionUI {
     public static void buildP1()
     {
         //get information of calendar
-        int daySelected = myDateObj.getDayOfMonth();
-        int monthSelected = myDateObj.getMonthValue();
-        int yearSelected = myDateObj.getYear();
+        daySelected = myDateObj.getDayOfMonth();
+        monthSelected = myDateObj.getMonthValue();
+        yearSelected = myDateObj.getYear();
 
 
 
@@ -86,6 +86,17 @@ public class DateSelectionUI {
         bPreviousMonth.setFocusPainted(false);
         bPreviousMonth.setContentAreaFilled(false);
         bPreviousMonth.setPreferredSize(new Dimension(60, 35));
+        bPreviousMonth.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monthSelected--;
+                if (monthSelected <= 0) {
+                    monthSelected = 12;
+                    yearSelected--;
+                }
+                monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+            }
+        });
 
 
         //initialize button for next month
@@ -95,7 +106,17 @@ public class DateSelectionUI {
         bNextMonth.setFocusPainted(false);
         bNextMonth.setContentAreaFilled(false);
         bNextMonth.setPreferredSize(new Dimension(60, 35));
-
+        bNextMonth.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                monthSelected++;
+                if (monthSelected > 12) {
+                    monthSelected = 1;
+                    yearSelected++;
+                }
+                monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+            }
+        });
 
         //initialize p1Div
         p1Div = new JPanel[3];
