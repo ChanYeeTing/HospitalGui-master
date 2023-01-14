@@ -14,11 +14,14 @@ public class DateSelectionUI {
     static JPanel headerPanel;//panel for header
     static JPanel p1;//panel for p1Div to be inserted
     static JPanel p1Div[];//3 small panels for 2 arrow button and a calendar month and year label
+    static JPanel p2;//panel for calendar
+    static JPanel p2Div[];//49 panels to be put into p2
 
 
     //JLabel
     static JLabel headerLabel;//headerLabel
     static JLabel monthLabel;//label for month of the label
+    static JLabel l[];//labels for day type name in calendar
 
 
     //JButton
@@ -30,11 +33,15 @@ public class DateSelectionUI {
     static int daySelected;//store day of month selected
     static int monthSelected;//store month selected
     static int yearSelected;//store year selected
+    static String dateSelected;//store date selectec
+
     static LocalDate myDateObj = LocalDate.now();//date object
 
     //array of month names
     static String monthStr [] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
+    //array of day type name in 3 characters
+    static String dayTypeArr [] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
 
 
 
@@ -134,6 +141,49 @@ public class DateSelectionUI {
         f.add(p1);
     }
 
+
+    public static void buildP2() {
+        //get dateSelected in day/month/year format
+        dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
+
+        //initialize p2
+        p2 = new JPanel();
+        p2.setBounds(45, 150, 600, 240);
+        p2.setBackground(new Color(163, 248, 235));
+        p2.setLayout(new GridLayout(7, 7));//7x7 dimension calender
+
+
+        //initialize l
+        l = new JLabel[7];
+        for (int i = 0; i < l.length; i++) {
+            l[i] = new JLabel(dayTypeArr[i]);
+            l[i].setFont(new Font(Font.SERIF, Font.BOLD, 25));
+        }
+
+
+        //initialize p2Div
+        p2Div = new JPanel[49];//array of 49 panels
+        for (int i = 0; i < p2Div.length; i++) {
+            p2Div[i] = new JPanel();
+            p2Div[i].setLayout(new GridBagLayout());
+            //add dayType label to the first row
+            if (i < 7) {
+                p2Div[i].add(l[i]);
+                p2Div[i].setBackground(new Color(190, 235, 239));
+            } else {
+                p2Div[i].setLayout(null);
+                p2Div[i].setBackground(new Color(227, 235, 239));
+            }
+
+            //add small panel to main panel
+            p2.add(p2Div[i]);
+        }
+
+
+        f.add(p2);
+    }
+
+
     DateSelectionUI()
     {
         //set properties of f
@@ -148,6 +198,7 @@ public class DateSelectionUI {
 
         buildHeaderPanel();
         buildP1();
+        buildP2();
 
     }
 }
