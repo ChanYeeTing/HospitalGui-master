@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.text.ParseException;
 import javax.swing.*;
 public class HospitalGUI extends JFrame implements ActionListener{
 
@@ -16,7 +17,7 @@ JList list1;
 
 JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 
-JButton b1,b2,b3,b4,b5,b6;
+JButton b1,b2,b3,b4,b5,b6, b7;
 
 JComboBox c1;
 
@@ -60,11 +61,14 @@ JComboBox c1;
         b3.addActionListener(this);
         b4=new JButton("Find A Doctor");
         b4.addActionListener(this);
+        b7= new JButton("Make Appointment");
+        b7.addActionListener(this);
         
         p2.add(b1);
         p2.add(b2);
         p2.add(b3);
         p2.add(b4);
+        p2.add(b7);
         
         p.add(p3);
         p.add(p1);
@@ -117,8 +121,16 @@ JComboBox c1;
               p4.removeAll();
               view4();
                p4.setVisible(true);
+         }else if(e.getSource() == b7)
+         {
+             this.dispose();
+             try {
+                 new MakeAppointment();
+             } catch (ParseException ex) {
+                 throw new RuntimeException(ex);
+             }
          }
-         }
+    }
        
     
         public void view1(){
