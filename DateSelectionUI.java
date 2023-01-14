@@ -27,14 +27,15 @@ public class DateSelectionUI {
     //JButton
     static JButton bPreviousMonth;//button to allow user view previous month calendar
     static JButton bNextMonth;//button to allow user view next month calendar
+    static JButton b[];//buttons in calendar
 
 
     //Variables or Arrays
     static int daySelected;//store day of month selected
     static int monthSelected;//store month selected
     static int yearSelected;//store year selected
+    static int day1DayTypeArrIndex;//store the index of dayTypeArr which the value is the day type of first day of month
     static String dateSelected;//store date selectec
-
     static LocalDate myDateObj = LocalDate.now();//date object
 
     //array of month names
@@ -142,7 +143,7 @@ public class DateSelectionUI {
     }
 
 
-    public static void buildP2() {
+    public static void buildP2(int numDays) {
         //get dateSelected in day/month/year format
         dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
 
@@ -178,9 +179,40 @@ public class DateSelectionUI {
             //add small panel to main panel
             p2.add(p2Div[i]);
         }
-
-
         f.add(p2);
+
+
+        //to obtain the index from dayTypeArr where its value is equal to the day type of the first day of the month
+        String dayType = myDateObj.getDayOfWeek().toString().substring(0, 3);
+        for(int i = 0 ; i < dayTypeArr.length; i++)
+        {
+            if(dayTypeArr[i].equals(dayType))
+                day1DayTypeArrIndex = i - myDateObj.getDayOfMonth() + 1;
+        }
+        while(day1DayTypeArrIndex < 0)
+            day1DayTypeArrIndex += 7;
+
+
+
+        //create the button with amount same as number of day in that month
+        b = new JButton[numDays];
+
+        for(int i = 0; i < numDays ; i++)
+        {
+            b[i] = new JButton("" + (i+1));
+            b[i].setFocusPainted(false);
+            b[i].setBounds(1,1 , 85, 30);
+            if(i == daySelected - 1) {
+                b[i].setBackground(new Color(249, 166, 18));
+                b[daySelected -1].setForeground(Color.white);
+            }
+            else
+                b[i].setBackground(new Color(46, 172, 221));
+            b[i].setFont(new Font("Arial", Font.PLAIN, 20));
+
+            p2Div[day1DayTypeArrIndex + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
+        }
+
     }
 
 
@@ -198,7 +230,10 @@ public class DateSelectionUI {
 
         buildHeaderPanel();
         buildP1();
-        buildP2();
+
+
+        int numDaysThisMonth = MakeAppointment.getNumOfDays(myDateObj.getMonthValue(),myDateObj.getYear());
+        buildP2(numDaysThisMonth);
 
     }
 }
