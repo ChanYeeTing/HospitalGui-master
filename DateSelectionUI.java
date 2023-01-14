@@ -16,6 +16,7 @@ public class DateSelectionUI {
     static JPanel p1Div[];//3 small panels for 2 arrow button and a calendar month and year label
     static JPanel p2;//panel for calendar
     static JPanel p2Div[];//49 panels to be put into p2
+    static JPanel p3;//p3 at the bottom to place p3Button1 and p3Button2
 
 
     //JLabel
@@ -28,6 +29,8 @@ public class DateSelectionUI {
     static JButton bPreviousMonth;//button to allow user view previous month calendar
     static JButton bNextMonth;//button to allow user view next month calendar
     static JButton b[];//buttons in calendar
+    static JButton p3Button1;//button for CANCEL
+    static JButton p3Button2;//button for OK
 
 
     //Variables or Arrays
@@ -277,6 +280,36 @@ public class DateSelectionUI {
     }
 
 
+    public static void buildP3()
+    {
+        //initialize panel 3
+        p3 = new JPanel();
+        p3.setLayout(new GridBagLayout());
+        p3.setBounds(0, 400, 700,60);
+        p3.setBackground(new Color(54, 33, 89));
+
+
+        //initialize p3Button1
+        p3Button1 = new JButton("CANCEL");
+        p3Button1.setFont(new Font("Arial", Font.PLAIN, 15));
+        p3Button1.setForeground(Color.white);
+        p3Button1.setForeground(new Color(152, 160, 165));
+        p3Button1.setPreferredSize(new Dimension(100, 40));
+        p3.add(p3Button1);
+
+
+        //initialize p3Button2
+        p3Button2 = new JButton("OK");
+        p3Button2.setFont(new Font("Arial", Font.PLAIN, 15));
+        p3Button2.setPreferredSize(new Dimension(100, 40));
+        p3Button2.setBackground(Color.white);
+        p3Button2.setBackground(new Color(0, 152, 203));
+        p3.add(p3Button2);
+
+        f.add(p3);
+    }
+
+
     DateSelectionUI()
     {
         //set properties of f
@@ -292,9 +325,10 @@ public class DateSelectionUI {
         buildHeaderPanel();
         buildP1();
 
-
         int numDaysThisMonth = MakeAppointment.getNumOfDays(myDateObj.getMonthValue(),myDateObj.getYear());
         buildP2(numDaysThisMonth, 0);
+
+        buildP3();
 
     }
 }
