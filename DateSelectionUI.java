@@ -253,6 +253,23 @@ public class DateSelectionUI {
             else
                 b[i].setBackground(new Color(46, 172, 221));
             b[i].setFont(new Font("Arial", Font.PLAIN, 20));
+            int finalI = i;
+            b[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //set background color of last selected button to blue and font color to black
+                    b[daySelected -1].setBackground(new Color(46, 172, 221));//let the last clicked button return its green color
+                    b[daySelected -1].setForeground(Color.black);
+
+                    //set background color of current selected button to orange and font color to white
+                    b[finalI].setBackground(new Color(249, 166, 18));
+                    b[finalI].setForeground(Color.white);
+
+                    //reset value of daySelected and dateSelected
+                    daySelected = finalI + 1;
+                    dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
+                }
+            });
 
             p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
         }
