@@ -248,7 +248,7 @@ class MakeAppointment {
     {
         int min = 0;
         int hour = 9;
-        l3 = new JLabel[36];
+        l3 = new JLabel[40];
         for(int i = 0; i < l3.length; i++)
         {
             l3[i] = new JLabel();
