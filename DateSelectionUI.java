@@ -335,6 +335,7 @@ public class DateSelectionUI {
         p3Button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //change the date shown on dateButton
                 MakeAppointment.dateButton.setText(dateSelected);
                 MakeAppointment.p2.setVisible(false);
                 try {
@@ -342,6 +343,11 @@ public class DateSelectionUI {
                 } catch (ParseException ex) {
                     throw new RuntimeException(ex);
                 }
+
+                //rebuild p3
+                MakeAppointment.p3.setVisible(false);
+                MakeAppointment.buildP3();
+
                 f.dispose();
             }
         });

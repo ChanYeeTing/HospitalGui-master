@@ -4,12 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Scanner;
 
 
 //MakeAppointment class
@@ -35,6 +38,7 @@ class MakeAppointment {
     static JLabel instructionLabel;//label for instructions to user
     static JLabel l2[];//labels for each p2Div in p2
     static JLabel l3[];//labels for column Start Time
+    static JLabel notAvailableLabel;
 
     //JButton
     static JButton dateButton;//button what will let user choose starting date
@@ -59,6 +63,7 @@ class MakeAppointment {
     static int selectedYear = Integer.parseInt(dateArr[2]);
 
 
+
     static int numOfRows = 36;//number of rows in table p3
 
 
@@ -66,6 +71,8 @@ class MakeAppointment {
     static String doctor [] = {"Ali", "James", "Sarah", "Mary Jane"};//doctor name array
     static String dayTypeArr [] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};//day type array
     static String p2DateArray[];
+
+    static String selectedDoctor = doctor[0];
 
 
     //function to get number of days at specific month
@@ -109,6 +116,8 @@ class MakeAppointment {
             }
         }
     }
+
+
 
 
     //function that buildP2
@@ -181,6 +190,58 @@ class MakeAppointment {
         p.add(p2);
     }
 
+
+    public static void fillOccupiedSlotP3(int colI, int rowSI, int rowEI)
+    {
+        while(rowSI != rowEI + 1)
+        {
+            notAvailableLabel = new JLabel("Not Available");
+            p3Div[rowSI][colI].add(notAvailableLabel);
+            p3Div[rowSI][colI].setBackground(Color.red);
+            rowSI++;
+        }
+    }
+
+    public static void fillDoctorScheduleP3()
+    {
+        String doctorInfo [];
+        int p3ColIndex = 0, p3RowStartIndex = 0, p3RowEndIndex = 0;
+        try {
+            File myObj = new File("Doctor_Schedule.txt");
+            Scanner myReader = new Scanner(myObj);
+            myReader.useDelimiter("\t");
+            while (myReader.hasNext()) {
+                doctorInfo = (myReader.nextLine()).split("\t");
+                if(doctorInfo[0].equals(selectedDoctor))
+                {
+                    for(int i = 0 ; i < p2DateArray.length ; i++)
+                    {
+                        if(p2DateArray[i].equals(doctorInfo[1]))
+                        {
+                            p3ColIndex = i + 1;
+                            for(int j = 0 ; j < l3.length ; j++)
+                            {
+                                if(doctorInfo[2].equals(l3[j].getText()))
+                                    p3RowStartIndex = j;
+                                if(doctorInfo[3].equals(l3[j].getText())) {
+                                    p3RowEndIndex = j;
+                                    fillOccupiedSlotP3(p3ColIndex, p3RowStartIndex, p3RowEndIndex);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+
     //function to build up the array of string to be used in labels of Start Time
     public static void buildL3Array()
     {
@@ -228,6 +289,7 @@ class MakeAppointment {
             }
             p3Div[i][0].add(l3[i]);
         }
+        fillDoctorScheduleP3();
         p.add(p3);
     }
 
@@ -294,7 +356,14 @@ class MakeAppointment {
         doctorList = new JComboBox<String>(doctor);
         doctorList.setPreferredSize(new Dimension(200, 25));
         doctorList.setFont(new Font(Font.DIALOG, Font.PLAIN, 25));
-
+        doctorList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedDoctor = (String) doctorList.getSelectedItem();
+                p3.setVisible(false);
+                    buildP3();
+            }
+        });
 
         //initialize p1Div1Label
         p1Div1Label = new JLabel("Doctor Name: ");
