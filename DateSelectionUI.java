@@ -305,9 +305,15 @@ public class DateSelectionUI {
         //initialize p3Button1
         p3Button1 = new JButton("CANCEL");
         p3Button1.setFont(new Font("Arial", Font.PLAIN, 15));
-        p3Button1.setForeground(Color.white);
+        p3Button1.setBackground(Color.white);
         p3Button1.setForeground(new Color(152, 160, 165));
         p3Button1.setPreferredSize(new Dimension(100, 40));
+        p3Button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+            }
+        });
         p3.add(p3Button1);
 
 
