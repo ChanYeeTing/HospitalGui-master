@@ -65,6 +65,7 @@ class MakeAppointment {
     //Arrays
     static String doctor [] = {"Ali", "James", "Sarah", "Mary Jane"};//doctor name array
     static String dayTypeArr [] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};//day type array
+    static String p2DateArray[];
 
 
     //function to get number of days at specific month
@@ -87,6 +88,26 @@ class MakeAppointment {
         Format f = new SimpleDateFormat("EE");
         String str = f.format(sdf);
         return str;
+    }
+
+    //create an array which store 5 consecutive dates from the date the user selected
+    public static void buildP2DateArray(int d, int m, int y)
+    {
+        int numDays = getNumOfDays(m, y);
+        for(int i = 0 ; i < p2DateArray.length; i++)
+        {
+            p2DateArray[i] = d + "/" + m + "/" + y;
+            d++;
+            if(d > numDays)
+            {
+                d = 1;
+                m++;
+                if(m > 12) {
+                    m = 1;
+                    y++;
+                }
+            }
+        }
     }
 
 
@@ -131,6 +152,9 @@ class MakeAppointment {
         int day = selectedDay = Integer.parseInt(dateArr[0]);
         int month = selectedMonth = Integer.parseInt(dateArr[1]);
         int year = selectedYear = Integer.parseInt(dateArr[2]);
+
+        //create an array which store 5 consecutive dates from the date the user selected
+        buildP2DateArray(day, month, year);
 
         //get number of days in current month
         int numDays = getNumOfDays(month, year);
@@ -311,7 +335,7 @@ class MakeAppointment {
         f.add(appointmentScrollBar);
 
 
-
+        p2DateArray = new String[5];
         //calls functions build p2 and p3
         buildP2(selectedDate);
         buildP3();
