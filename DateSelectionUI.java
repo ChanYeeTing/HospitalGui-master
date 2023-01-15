@@ -1,6 +1,7 @@
 package hospitalgui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,11 @@ public class DateSelectionUI {
     static JButton b[];//buttons in calendar
     static JButton p3Button1;//button for CANCEL
     static JButton p3Button2;//button for OK
+
+
+    //Borders
+    static Border p2Border;
+    static Border p2Border2;
 
 
     //Variables or Arrays
@@ -187,11 +193,18 @@ public class DateSelectionUI {
         //get dateSelected in day/month/year format
         dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
 
+
+        //initialize p2Border and p2Border2
+        p2Border = BorderFactory.createLineBorder(Color.white, 1);
+        p2Border2 = BorderFactory.createLineBorder(Color.white, 5);
+
+
         //initialize p2
         p2 = new JPanel();
         p2.setBounds(45, 150, 600, 240);
         p2.setBackground(new Color(163, 248, 235));
         p2.setLayout(new GridLayout(7, 7));//7x7 dimension calender
+        p2.setBorder(p2Border2);
 
 
         //initialize l
@@ -215,6 +228,8 @@ public class DateSelectionUI {
                 p2Div[i].setLayout(null);
                 p2Div[i].setBackground(new Color(227, 235, 239));
             }
+
+            p2Div[i].setBorder(p2Border);
 
             //add small panel to main panel
             p2.add(p2Div[i]);

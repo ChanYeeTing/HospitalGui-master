@@ -1,6 +1,7 @@
 package hospitalgui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import java.util.Scanner;
 class MakeAppointment {
     //JFrame
     static JFrame f;//frame to make appointment
+
 
     //JPanel
     static JPanel headerPanel;//panel for headerLabel
@@ -40,17 +42,26 @@ class MakeAppointment {
     static JLabel l3[];//labels for column Start Time
     static JLabel notAvailableLabel;
 
+
     //JButton
     static JButton dateButton;//button what will let user choose starting date
     static JButton slotButton[][];
 
+
     //JScrollPane
     static JScrollPane appointmentScrollBar;//to create scroll bar for user to scroll
+
 
     //JComboBox
     static JComboBox<String> doctorList;//doctor drop down list
 
 
+    //Borders
+    static Border p2Border;
+    static Border whiteBorder;
+
+
+    //Variables or Arrays
     //To get date today
     static LocalDate myDateObj = LocalDate.now();
     static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -62,7 +73,6 @@ class MakeAppointment {
     static int selectedDay = Integer.parseInt(dateArr[0]);
     static int selectedMonth = Integer.parseInt(dateArr[1]);
     static int selectedYear = Integer.parseInt(dateArr[2]);
-
 
 
     static int numOfRows = 36;//number of rows in table p3
@@ -136,9 +146,15 @@ class MakeAppointment {
         l2[0] = new JLabel("Start Time");
         l2[0].setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 
+
+        //initialize p2Border
+        p2Border = BorderFactory.createLineBorder(Color.BLACK, 2);
+
+
         //add l2[0] to p2Div[0] to p2 to p
         p2Div = new JPanel[6];
         p2Div[0] = new JPanel();
+        p2Div[0].setBorder(p2Border);
         p2Div[0].add(l2[0]);
         p2.add(p2Div[0]);
 
@@ -177,6 +193,7 @@ class MakeAppointment {
 
             p2Div[i] = new JPanel();
             p2Div[i].add(l2[i]);
+            p2Div[i].setBorder(p2Border);
 
             dayTypeIndex++;
             if(dayTypeIndex >= 7)
@@ -194,10 +211,12 @@ class MakeAppointment {
 
     public static void fillOccupiedSlotP3(int colI, int rowSI, int rowEI)
     {
+        whiteBorder = BorderFactory.createLineBorder(Color.WHITE, 2);
         while(rowSI != rowEI)
         {
             notAvailableLabel = new JLabel("Not Available");
             p3Div[rowSI][colI].add(notAvailableLabel);
+            p3Div[rowSI][colI].setBorder(whiteBorder);
             p3Div[rowSI][colI].setBackground(Color.red);
             rowSI++;
         }
@@ -345,9 +364,9 @@ class MakeAppointment {
             {
                 p3Div[i][j] = new JPanel();
                 if((i+j) % 2 == 0)
-                    p3Div[i][j].setBackground(new Color(0, 152, 203));
+                    p3Div[i][j].setBackground(new Color(240, 242, 245));
                 else
-                    p3Div[i][j].setBackground(new Color(77, 196, 236));
+                    p3Div[i][j].setBackground(new Color(250, 250, 251));
                 p3.add(p3Div[i][j]);
             }
             p3Div[i][0].add(l3[i]);
@@ -387,7 +406,7 @@ class MakeAppointment {
 
 
         //initialize instructionLabel
-        instructionLabel = new JLabel("Choose Doctor name and start date:");
+        instructionLabel = new JLabel("Select doctor and start date then click the \"Make Appointment\" button on the slots you wish to attend :)");
         instructionLabel.setFont(new Font(Font.DIALOG, Font.ITALIC|Font.BOLD, 22));
         instructionLabel.setBounds(20, 0, 1200, 100);
 
