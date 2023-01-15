@@ -277,7 +277,7 @@ public class SlotComfirmationUI {
         f.add(remainingCharLabel);
     }
 
-    public static void buildP3()
+    public static void buildP3(int i , int j)
     {
         p3Button1 = new JButton("CANCEL");
         p3Button1.addActionListener(new ActionListener() {
@@ -293,6 +293,13 @@ public class SlotComfirmationUI {
         p3Button2.setFocusPainted(false);
         p3Button2.setPreferredSize(new Dimension(100, 30));
         p3Button2.setVisible(false);
+        p3Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPendingMAP3(i, j);
+                f.dispose();
+            }
+        });
 
         p3 = new JPanel();
         p3.setBackground(Color.pink);
@@ -301,6 +308,27 @@ public class SlotComfirmationUI {
         p3.add(p3Button2);
 
         f.add(p3);
+    }
+
+    public static void addPendingMAP3(int i , int j)
+    {
+        int numSlot = 0;
+        if(selectedDuration.equals(appointmentDuration[0]))
+            numSlot = 1;
+        else if (selectedDuration.equals(appointmentDuration[1]))
+            numSlot = 2;
+        else if (selectedDuration.equals(appointmentDuration[2]))
+            numSlot = 4;
+
+        for(int k = 0; k < numSlot; k++)
+        {
+            MakeAppointment.slotButton[i][j].setText("Pending...");
+            MakeAppointment.slotButton[i][j].setBackground(Color.red);
+            MakeAppointment.p3Div[i][j+1].setBackground(Color.red);
+            i++;
+            if(i >= 36)
+                break;
+        }
     }
 
 
@@ -325,6 +353,6 @@ public class SlotComfirmationUI {
         buildP1();
         buildP2(i);
         buildReasonSelection();
-        buildP3();
+        buildP3(i, j);
     }
 }

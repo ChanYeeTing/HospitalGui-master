@@ -194,7 +194,7 @@ class MakeAppointment {
 
     public static void fillOccupiedSlotP3(int colI, int rowSI, int rowEI)
     {
-        while(rowSI != rowEI + 1)
+        while(rowSI != rowEI)
         {
             notAvailableLabel = new JLabel("Not Available");
             p3Div[rowSI][colI].add(notAvailableLabel);
