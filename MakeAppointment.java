@@ -277,6 +277,16 @@ class MakeAppointment {
                     slotButton[i][j].setBounds(0, 0, 200, 30);
                     slotButton[i][j].setFocusPainted(false);
                     slotButton[i][j].setBackground(new Color(167, 253, 87));
+                    int finalI = i;
+                    int finalJ = j;
+                    slotButton[i][j].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(slotButton[finalI][finalJ].getText().equals("Pending...")) {
+                            }else
+                                new SlotComfirmationUI(finalI, finalJ);
+                        }
+                    });
                     p3Div[i][j + 1].setLayout(null);
                     p3Div[i][j + 1].add(slotButton[i][j]);
                 }
