@@ -42,6 +42,7 @@ class MakeAppointment {
 
     //JButton
     static JButton dateButton;//button what will let user choose starting date
+    static JButton slotButton[][];
 
     //JScrollPane
     static JScrollPane appointmentScrollBar;//to create scroll bar for user to scroll
@@ -264,6 +265,25 @@ class MakeAppointment {
         }
     }
 
+    public static void buildP3AvailableSlot()
+    {
+        slotButton = new JButton[36][5];
+        for(int i = 0 ; i < 36; i++)
+        {
+            for(int j = 0; j < 5; j++)
+            {
+                if(!(p3Div[i][j+1].getBackground().toString().equals("java.awt.Color[r=255,g=0,b=0]"))) {
+                    slotButton[i][j] = new JButton("Make Appointment");
+                    slotButton[i][j].setBounds(0, 0, 200, 30);
+                    slotButton[i][j].setFocusPainted(false);
+                    slotButton[i][j].setBackground(new Color(167, 253, 87));
+                    p3Div[i][j + 1].setLayout(null);
+                    p3Div[i][j + 1].add(slotButton[i][j]);
+                }
+            }
+        }
+    }
+
 
     //function that buildP3
     public static void buildP3(){
@@ -290,6 +310,7 @@ class MakeAppointment {
             p3Div[i][0].add(l3[i]);
         }
         fillDoctorScheduleP3();
+        buildP3AvailableSlot();
         p.add(p3);
     }
 
