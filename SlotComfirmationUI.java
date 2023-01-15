@@ -23,6 +23,7 @@ public class SlotComfirmationUI {
     static JPanel p1Div[];
     static JPanel p2;
     static JPanel p2Div[];
+    static JPanel p3;
 
 
     //JLabels
@@ -33,6 +34,11 @@ public class SlotComfirmationUI {
     static JLabel endTimeLabel;
     static JLabel reasonLabel;
     static JLabel remainingCharLabel;
+
+
+    //JButtons
+    static JButton p3Button1;
+    static JButton p3Button2;
 
 
 
@@ -222,6 +228,7 @@ public class SlotComfirmationUI {
         });
 
 
+
         //initialize otherReasonSP
         otherReasonSP = new JScrollPane (otherReasonTA, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         otherReasonSP.setBounds(50, 270, 600, 120);
@@ -259,6 +266,31 @@ public class SlotComfirmationUI {
         f.add(remainingCharLabel);
     }
 
+    public static void buildP3()
+    {
+        p3Button1 = new JButton("CANCEL");
+        p3Button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+            }
+        });
+        p3Button1.setFocusPainted(false);
+        p3Button1.setPreferredSize(new Dimension(100, 30));
+
+        p3Button2 = new JButton("OK");
+        p3Button2.setFocusPainted(false);
+        p3Button2.setPreferredSize(new Dimension(100, 30));
+
+        p3 = new JPanel();
+        p3.setBackground(Color.pink);
+        p3.setBounds(0, 410, 700, 60);
+        p3.add(p3Button1);
+        p3.add(p3Button2);
+
+        f.add(p3);
+    }
+
 
     SlotComfirmationUI(int i , int j)
     {
@@ -281,5 +313,6 @@ public class SlotComfirmationUI {
         buildP1();
         buildP2(i);
         buildReasonSelection();
+        buildP3();
     }
 }
