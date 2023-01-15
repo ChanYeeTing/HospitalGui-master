@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.time.LocalDate;
 
 public class DateSelectionUI {
@@ -304,6 +305,28 @@ public class DateSelectionUI {
         p3Button2.setPreferredSize(new Dimension(100, 40));
         p3Button2.setBackground(Color.white);
         p3Button2.setBackground(new Color(0, 152, 203));
+        p3Button2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(249, 166, 18));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(0, 152, 203));
+            }
+        });
+        p3Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MakeAppointment.dateButton.setText(dateSelected);
+                MakeAppointment.p2.setVisible(false);
+                try {
+                    MakeAppointment.buildP2(dateSelected);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+                f.dispose();
+            }
+        });
         p3.add(p3Button2);
 
         f.add(p3);
@@ -312,6 +335,8 @@ public class DateSelectionUI {
 
     DateSelectionUI()
     {
+        displacementAccumulator = 0;
+
         //set properties of f
         f = new JFrame("Select Date");
         f.setSize(700,500);
