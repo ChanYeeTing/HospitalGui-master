@@ -206,10 +206,12 @@ public class SlotComfirmationUI {
             public void insertUpdate(DocumentEvent e) {
                 if(!otherReasonTA.getText().equals("Enter your reason here...")) {
                     remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
+                    p3Button2.setVisible(true);
                     selectedReason = otherReasonTA.getText();
                 }
                 if(otherReasonTA.getDocument().getLength() > 200) {
                     remainingCharLabel.setForeground(Color.RED);
+                    p3Button2.setVisible(false);
                 }
             }
 
@@ -217,8 +219,11 @@ public class SlotComfirmationUI {
             public void removeUpdate(DocumentEvent e) {
                 selectedReason = otherReasonTA.getText();
                 remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
-                if(otherReasonTA.getDocument().getLength() <= 200) {
+                if(otherReasonTA.getDocument().getLength() == 0)
+                      p3Button2.setVisible(false);
+                else if(otherReasonTA.getDocument().getLength() <= 200) {
                     remainingCharLabel.setForeground(Color.black);
+                    p3Button2.setVisible(true);
                 }
             }
 
@@ -246,13 +251,19 @@ public class SlotComfirmationUI {
 
                 if(selectedReason == appointmentReasons[0]) {
                     otherReasonSP.setVisible(false);
+                    p3Button2.setVisible(false);
                     remainingCharLabel.setVisible(false);
                 }
                 else if(selectedReason == appointmentReasons[appointmentReasons.length - 1]) {
                     otherReasonSP.setVisible(true);
                     remainingCharLabel.setVisible(true);
+                    if(otherReasonTA.getText().equals("Enter your reason here...") || otherReasonTA.getDocument().getLength() == 0 || otherReasonTA.getDocument().getLength() > 200)
+                        p3Button2.setVisible(false);
+                    else
+                        p3Button2.setVisible(true);
                 }
                 else {
+                    p3Button2.setVisible(true);
                     otherReasonSP.setVisible(false);
                     remainingCharLabel.setVisible(false);
                 }
@@ -281,6 +292,7 @@ public class SlotComfirmationUI {
         p3Button2 = new JButton("OK");
         p3Button2.setFocusPainted(false);
         p3Button2.setPreferredSize(new Dimension(100, 30));
+        p3Button2.setVisible(false);
 
         p3 = new JPanel();
         p3.setBackground(Color.pink);
