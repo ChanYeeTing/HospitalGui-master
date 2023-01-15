@@ -1,9 +1,12 @@
 package hospitalgui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.time.LocalDate;
 
 public class DateSelectionUI {
@@ -16,6 +19,7 @@ public class DateSelectionUI {
     static JPanel p1Div[];//3 small panels for 2 arrow button and a calendar month and year label
     static JPanel p2;//panel for calendar
     static JPanel p2Div[];//49 panels to be put into p2
+    static JPanel p3;//p3 at the bottom to place p3Button1 and p3Button2
 
 
     //JLabel
@@ -27,14 +31,23 @@ public class DateSelectionUI {
     //JButton
     static JButton bPreviousMonth;//button to allow user view previous month calendar
     static JButton bNextMonth;//button to allow user view next month calendar
+    static JButton b[];//buttons in calendar
+    static JButton p3Button1;//button for CANCEL
+    static JButton p3Button2;//button for OK
+
+
+    //Borders
+    static Border p2Border;
+    static Border p2Border2;
 
 
     //Variables or Arrays
     static int daySelected;//store day of month selected
     static int monthSelected;//store month selected
     static int yearSelected;//store year selected
+    static int day1DayTypeArrIndex;//store the index of dayTypeArr which the value is the day type of first day of month
+    static int displacementAccumulator;//accumulate the displacement needed, the value used to determine location of button in calendar
     static String dateSelected;//store date selectec
-
     static LocalDate myDateObj = LocalDate.now();//date object
 
     //array of month names
@@ -96,12 +109,28 @@ public class DateSelectionUI {
         bPreviousMonth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //update the month and year
                 monthSelected--;
                 if (monthSelected <= 0) {
                     monthSelected = 12;
                     yearSelected--;
                 }
+
+                //every time move to previous month set default day selected is 1
+                daySelected = 1;
+
+                //reset monthLabel
                 monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+
+                //get number of days and displacement needed to rebuild p2
+                int numDays = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+                int displacement = numDays;
+
+                //rebuild p2
+                p2.setVisible(false);
+                buildP2(numDays, -displacement);
+                f.add(p2);
+                f.add(p1);
             }
         });
 
@@ -116,12 +145,30 @@ public class DateSelectionUI {
         bNextMonth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //get the displacement needed to rebuild p2
+                int displacement = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+
+                //update the month and year
                 monthSelected++;
                 if (monthSelected > 12) {
                     monthSelected = 1;
                     yearSelected++;
                 }
+
+                //every time move to next month set default day selected is 1
+                daySelected = 1;
+
+                //reset monthLabel
                 monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
+
+                //get number of days needed to rebuild p2
+                int numDays = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
+
+                //rebuild p2
+                p2.setVisible(false);
+                buildP2(numDays, displacement);
+                f.add(p2);
+                f.add(p1);
             }
         });
 
@@ -142,15 +189,22 @@ public class DateSelectionUI {
     }
 
 
-    public static void buildP2() {
+    public static void buildP2(int numDays, int displacement) {
         //get dateSelected in day/month/year format
         dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
+
+
+        //initialize p2Border and p2Border2
+        p2Border = BorderFactory.createLineBorder(Color.white, 1);
+        p2Border2 = BorderFactory.createLineBorder(Color.white, 5);
+
 
         //initialize p2
         p2 = new JPanel();
         p2.setBounds(45, 150, 600, 240);
         p2.setBackground(new Color(163, 248, 235));
         p2.setLayout(new GridLayout(7, 7));//7x7 dimension calender
+        p2.setBorder(p2Border2);
 
 
         //initialize l
@@ -175,17 +229,158 @@ public class DateSelectionUI {
                 p2Div[i].setBackground(new Color(227, 235, 239));
             }
 
+            p2Div[i].setBorder(p2Border);
+
             //add small panel to main panel
             p2.add(p2Div[i]);
         }
-
-
         f.add(p2);
+
+
+        //to obtain the index from dayTypeArr where its value is equal to the day type of the first day of the month
+        String dayType = myDateObj.getDayOfWeek().toString().substring(0, 3);
+        for(int i = 0 ; i < dayTypeArr.length; i++)
+        {
+            if(dayTypeArr[i].equals(dayType))
+                day1DayTypeArrIndex = i - myDateObj.getDayOfMonth() + 1;
+        }
+        while(day1DayTypeArrIndex < 0)
+            day1DayTypeArrIndex += 7;
+
+
+        //accumulate the displacement
+        displacementAccumulator += (displacement % 7);
+        if ((day1DayTypeArrIndex + displacementAccumulator) > 6)
+            displacementAccumulator -= 7;
+        if((day1DayTypeArrIndex + displacementAccumulator) < 0)
+            displacementAccumulator += 7;
+
+
+
+
+        //create the button with amount same as number of day in that month
+        b = new JButton[numDays];
+
+        for(int i = 0; i < numDays ; i++)
+        {
+            b[i] = new JButton("" + (i+1));
+            b[i].setFocusPainted(false);
+            b[i].setBounds(1,1 , 85, 30);
+            if(i == daySelected - 1) {
+                b[i].setBackground(new Color(249, 166, 18));
+                b[daySelected -1].setForeground(Color.white);
+            }
+            else
+                b[i].setBackground(new Color(46, 172, 221));
+            b[i].setFont(new Font("Arial", Font.PLAIN, 20));
+            int finalI = i;
+            b[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //set background color of last selected button to blue and font color to black
+                    b[daySelected -1].setBackground(new Color(46, 172, 221));//let the last clicked button return its green color
+                    b[daySelected -1].setForeground(Color.black);
+
+                    //set background color of current selected button to orange and font color to white
+                    b[finalI].setBackground(new Color(249, 166, 18));
+                    b[finalI].setForeground(Color.white);
+
+                    //reset value of daySelected and dateSelected
+                    daySelected = finalI + 1;
+                    dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
+                }
+            });
+            b[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    b[finalI].setBackground(new Color(249, 18, 168));
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    if(daySelected == finalI + 1)
+                        b[finalI].setBackground(new Color(249, 166, 18));
+                    else
+                        b[finalI].setBackground(new Color(46, 172, 221));
+                }
+            });
+
+            p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
+        }
+
+    }
+
+
+    public static void buildP3()
+    {
+        //initialize panel 3
+        p3 = new JPanel();
+        p3.setLayout(new GridBagLayout());
+        p3.setBounds(0, 400, 700,60);
+        p3.setBackground(new Color(54, 33, 89));
+
+
+        //initialize p3Button1
+        p3Button1 = new JButton("CANCEL");
+        p3Button1.setFont(new Font("Arial", Font.PLAIN, 15));
+        p3Button1.setBackground(Color.white);
+        p3Button1.setForeground(new Color(152, 160, 165));
+        p3Button1.setPreferredSize(new Dimension(100, 40));
+        p3Button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+            }
+        });
+        p3.add(p3Button1);
+
+
+        //initialize p3Button2
+        p3Button2 = new JButton("OK");
+        p3Button2.setFont(new Font("Arial", Font.PLAIN, 15));
+        p3Button2.setPreferredSize(new Dimension(100, 40));
+        p3Button2.setBackground(Color.white);
+        p3Button2.setBackground(new Color(0, 152, 203));
+        p3Button2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(249, 166, 18));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(0, 152, 203));
+            }
+        });
+        p3Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change the date shown on dateButton
+                MakeAppointment.dateButton.setText(dateSelected);
+                MakeAppointment.p2.setVisible(false);
+                try {
+                    MakeAppointment.buildP2(dateSelected);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                //rebuild p3
+                MakeAppointment.p3.setVisible(false);
+                try {
+                    MakeAppointment.buildP3();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                f.dispose();
+            }
+        });
+        p3.add(p3Button2);
+
+        f.add(p3);
     }
 
 
     DateSelectionUI()
     {
+        displacementAccumulator = 0;
+
         //set properties of f
         f = new JFrame("Select Date");
         f.setSize(700,500);
@@ -198,7 +393,11 @@ public class DateSelectionUI {
 
         buildHeaderPanel();
         buildP1();
-        buildP2();
+
+        int numDaysThisMonth = MakeAppointment.getNumOfDays(myDateObj.getMonthValue(),myDateObj.getYear());
+        buildP2(numDaysThisMonth, 0);
+
+        buildP3();
 
     }
 }
