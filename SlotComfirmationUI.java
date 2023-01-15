@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class SlotComfirmationUI {
@@ -59,6 +61,7 @@ public class SlotComfirmationUI {
     static String selectedDate;
     static String selectedStartTime;
     static String endTime;
+    static String selectedDoctor;
     static String appointmentDuration[] = {"15 mins", "30 mins", "1 hour"};
     static String appointmentReasons[] =  {"<Click to select>", "Yearly body checkup", "Sick", "Mental health checkup", "Other"};
     static String selectedDuration = appointmentDuration[0];
@@ -297,6 +300,7 @@ public class SlotComfirmationUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addPendingMAP3(i, j);
+                insertAppointmentRequest();
                 f.dispose();
             }
         });
@@ -331,14 +335,25 @@ public class SlotComfirmationUI {
         }
     }
 
+    public static void insertAppointmentRequest()
+    {
+        try {
+            FileWriter myWriter = new FileWriter("appointmentRequest.txt", true);
+            myWriter.write(PatientInfo.account + "\t" + selectedDoctor + "\t" + selectedDate + "\t" + selectedStartTime + "\t" + endTime + "\t" + selectedReason + "\n");
+            myWriter.close();
+        }catch(IOException e) {
+            System.out.println("Something went wrong");
+        }
+    }
+
 
     SlotComfirmationUI(int i , int j)
     {
-        //initialize selectedDate, selectedStartTime, endTime
+        //initialize selectedDate, selectedStartTime, endTime, selectedDoctor
         selectedDate = MakeAppointment.p2DateArray[j];
         selectedStartTime = MakeAppointment.l3[i].getText();
         endTime = MakeAppointment.l3[i+1].getText();
-
+        selectedDoctor = MakeAppointment.selectedDoctor;
 
         //initialize and set properties of f
         f = new JFrame("Slot confirm");
