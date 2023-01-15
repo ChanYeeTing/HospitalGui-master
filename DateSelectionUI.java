@@ -274,6 +274,18 @@ public class DateSelectionUI {
                     dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
                 }
             });
+            b[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    b[finalI].setBackground(new Color(249, 18, 168));
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    if(daySelected == finalI + 1)
+                        b[finalI].setBackground(new Color(249, 166, 18));
+                    else
+                        b[finalI].setBackground(new Color(46, 172, 221));
+                }
+            });
 
             p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
         }
