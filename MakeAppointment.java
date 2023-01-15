@@ -46,6 +46,7 @@ class MakeAppointment {
     //JButton
     static JButton dateButton;//button what will let user choose starting date
     static JButton slotButton[][];
+    static JButton backButton;
 
 
     //JScrollPane
@@ -394,6 +395,22 @@ class MakeAppointment {
         headerPanel.setBackground(new Color(54, 33, 89));
         headerPanel.setBounds(0, 0, 1280, 105);
         headerPanel.setLayout(new GridBagLayout());
+
+
+        //initialize backButton
+        backButton = new JButton("<--");
+        backButton.setFont(new Font("Calibri", Font.BOLD, 30));
+        backButton.setFocusPainted(false);
+        backButton.setBackground(new Color(231, 183, 183));
+        backButton.setBounds(10, 10, 100, 40);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                new HospitalGUI();
+            }
+        });
+        f.add(backButton);
 
 
         //initialize p

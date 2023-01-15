@@ -210,7 +210,7 @@ public class SlotComfirmationUI {
                 if(!otherReasonTA.getText().equals("Enter your reason here...")) {
                     remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
                     p3Button2.setVisible(true);
-                    selectedReason = otherReasonTA.getText();
+                    selectedReason = otherReasonTA.getText().replace('\n', ' ');
                 }
                 if(otherReasonTA.getDocument().getLength() > 200) {
                     remainingCharLabel.setForeground(Color.RED);
