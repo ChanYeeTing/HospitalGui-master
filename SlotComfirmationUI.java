@@ -3,9 +3,13 @@ package hospitalgui;
 import sun.misc.JavaUtilZipFileAccess;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 
 public class SlotComfirmationUI {
@@ -27,12 +31,22 @@ public class SlotComfirmationUI {
     static JLabel slotLabel;
     static JLabel durationLabel;
     static JLabel endTimeLabel;
+    static JLabel reasonLabel;
+    static JLabel remainingCharLabel;
 
 
 
     //JcomboBox
     static JComboBox<String> durationCB;
+    static JComboBox<String> reasonCB;
 
+
+    //JScrollPane
+    static JScrollPane otherReasonSP;
+
+
+    //JTextArea
+    static JTextArea otherReasonTA;
 
 
     //Variables or Arrays
@@ -40,7 +54,9 @@ public class SlotComfirmationUI {
     static String selectedStartTime;
     static String endTime;
     static String appointmentDuration[] = {"15 mins", "30 mins", "1 hour"};
+    static String appointmentReasons[] =  {"<Click to select>", "Yearly body checkup", "Sick", "Mental health checkup", "Other"};
     static String selectedDuration = appointmentDuration[0];
+    static String selectedReason = appointmentReasons[0];
 
 
     public static void buildInstructionPanel()
@@ -143,6 +159,106 @@ public class SlotComfirmationUI {
         f.add(p2);
     }
 
+    public static void buildReasonSelection()
+    {
+        //initialize reasonLabel
+        reasonLabel = new JLabel("Appointment Reason: ");
+        reasonLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        reasonLabel.setBounds(50, 200, 500, 20);
+
+
+        //initialize remainingCharLabel
+        remainingCharLabel = new JLabel("(0 / 200) characters");
+        remainingCharLabel.setBounds(530, 390, 200, 20);
+        remainingCharLabel.setVisible(false);
+
+
+        //initialize otherReasonTA
+        otherReasonTA = new JTextArea();
+        otherReasonTA.setLineWrap(true);
+        otherReasonTA.setWrapStyleWord(true);
+        otherReasonTA.setFont(new Font(Font.DIALOG, Font.PLAIN, 15));
+        otherReasonTA.setText("Enter your reason here...");
+        otherReasonTA.setForeground(new Color(125, 125, 125));
+        otherReasonTA.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(otherReasonTA.getText().equals("Enter your reason here..."))
+                    otherReasonTA.setText("");
+                otherReasonTA.setForeground(Color.black);
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(otherReasonTA.getDocument().getLength() == 0) {
+                    otherReasonTA.setText("Enter your reason here...");
+                    otherReasonTA.setForeground(new Color(125, 125, 125));
+                }
+            }
+        });
+        otherReasonTA.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(!otherReasonTA.getText().equals("Enter your reason here...")) {
+                    remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
+                    selectedReason = otherReasonTA.getText();
+                }
+                if(otherReasonTA.getDocument().getLength() > 200) {
+                    remainingCharLabel.setForeground(Color.RED);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                selectedReason = otherReasonTA.getText();
+                remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
+                if(otherReasonTA.getDocument().getLength() <= 200) {
+                    remainingCharLabel.setForeground(Color.black);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
+
+        //initialize otherReasonSP
+        otherReasonSP = new JScrollPane (otherReasonTA, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        otherReasonSP.setBounds(50, 270, 600, 120);
+        otherReasonSP.setVisible(false);
+
+
+        //initialize reasonCB
+        reasonCB = new JComboBox<String>(appointmentReasons);
+        reasonCB.setBounds(50, 230, 600, 30);
+        reasonCB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        reasonCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedReason = (String) reasonCB.getSelectedItem();
+
+                if(selectedReason == appointmentReasons[0]) {
+                    otherReasonSP.setVisible(false);
+                    remainingCharLabel.setVisible(false);
+                }
+                else if(selectedReason == appointmentReasons[appointmentReasons.length - 1]) {
+                    otherReasonSP.setVisible(true);
+                    remainingCharLabel.setVisible(true);
+                }
+                else {
+                    otherReasonSP.setVisible(false);
+                    remainingCharLabel.setVisible(false);
+                }
+
+            }
+        });
+
+        f.add(reasonLabel);
+        f.add(reasonCB);
+        f.add(otherReasonSP);
+        f.add(remainingCharLabel);
+    }
+
 
     SlotComfirmationUI(int i , int j)
     {
@@ -164,5 +280,6 @@ public class SlotComfirmationUI {
         buildInstructionPanel();
         buildP1();
         buildP2(i);
+        buildReasonSelection();
     }
 }
