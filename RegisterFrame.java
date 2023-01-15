@@ -252,15 +252,18 @@ public class RegisterFrame extends JFrame implements ActionListener {
             String PNumber = tf5.getText().trim();
             if (!PNumber.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Phone Number Only Accept Number");
+                return;
             }
             String Address = tf6.getText();
             String Height = tf7.getText().trim();
             if (!Height.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Height Only Accept Number");
+                return;
             }
             String Weight = tf8.getText().trim();
             if (!Weight.matches("([0-9]?)*")) {
                 JOptionPane.showMessageDialog(this, "Weight Only Accept Number");
+                return;
             }
 
             String Allergic;
@@ -272,24 +275,9 @@ public class RegisterFrame extends JFrame implements ActionListener {
             String Allergen = tf9.getText();
             String Blood = (String) cb1.getSelectedItem();
 
-//            Conf.account = Account;
-//            Conf.Fname = FName;
-//            Conf.Lname = LName;
-//            Conf.password = password1;
-//            Conf.gender = Gender;
-//            Conf.email = Email;
-//            Conf.pNumber = PNumber;
-//            Conf.address = Address;
-//            Conf.height = Double.parseDouble(Height);
-//            Conf.weight = Double.parseDouble(Weight);
-//            Conf.allergic = Boolean.valueOf(Allergic);
-//            Conf.NameAllergic = Allergen;
-//            Conf.bloodType = Blood;
-
-
             try {
                 FileWriter fw = new FileWriter("login.txt",true);
-                fw.write(Account+"\t"+password1);
+                fw.write(Account+"\t"+password1+"\n");
                 fw.close();
 
                 FileWriter fw2 = new FileWriter(Account+".txt",true);
