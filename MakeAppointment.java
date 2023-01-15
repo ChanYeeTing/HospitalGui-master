@@ -294,9 +294,42 @@ class MakeAppointment {
         }
     }
 
+    public static void buildPendingP3() throws FileNotFoundException {
+        String pendingAppointmentInfo[];
+        File myObj = new File("appointmentRequest.txt");
+        Scanner myReader = new Scanner(myObj);
+        myReader.useDelimiter("\t");
+        while (myReader.hasNext()) {
+            pendingAppointmentInfo = (myReader.nextLine()).split("\t");
+            if(pendingAppointmentInfo[0].equals(PatientInfo.account) && pendingAppointmentInfo[1].equals(selectedDoctor)) {
+                for (int i = 0; i < p2DateArray.length; i++) {
+                    if (pendingAppointmentInfo[2].equals(p2DateArray[i])) {
+                        for (int j = 0; j < 36; j++) {
+                            if (pendingAppointmentInfo[3].equals(l3[j].getText())) {
+                                slotButton[j][i].setText("Pending...");
+                                slotButton[j][i].setBackground(Color.red);
+                                for (int k = j + 1; k < 36; k++) {
+                                    if (pendingAppointmentInfo[4].equals(l3[k].getText())) {
+                                        break;
+                                    } else {
+                                        slotButton[k][i].setText("Pending...");
+                                        slotButton[k][i].setBackground(Color.red);
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        myReader.close();;
+    }
+
 
     //function that buildP3
-    public static void buildP3(){
+    public static void buildP3() throws FileNotFoundException {
         buildL3Array();
 
         //initialize p3
@@ -321,12 +354,13 @@ class MakeAppointment {
         }
         fillDoctorScheduleP3();
         buildP3AvailableSlot();
+        buildPendingP3();
         p.add(p3);
     }
 
 
     //Constructor
-    public MakeAppointment() throws ParseException {
+    public MakeAppointment() throws ParseException, FileNotFoundException {
         //create new frame
         f= new JFrame("Make Appointment");
 
@@ -392,7 +426,11 @@ class MakeAppointment {
             public void actionPerformed(ActionEvent e) {
                 selectedDoctor = (String) doctorList.getSelectedItem();
                 p3.setVisible(false);
+                try {
                     buildP3();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
