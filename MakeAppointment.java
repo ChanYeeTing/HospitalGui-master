@@ -364,9 +364,9 @@ class MakeAppointment {
             {
                 p3Div[i][j] = new JPanel();
                 if((i+j) % 2 == 0)
-                    p3Div[i][j].setBackground(new Color(0, 152, 203));
+                    p3Div[i][j].setBackground(new Color(240, 242, 245));
                 else
-                    p3Div[i][j].setBackground(new Color(77, 196, 236));
+                    p3Div[i][j].setBackground(new Color(250, 250, 251));
                 p3.add(p3Div[i][j]);
             }
             p3Div[i][0].add(l3[i]);
