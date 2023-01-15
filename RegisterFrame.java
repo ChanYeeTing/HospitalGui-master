@@ -275,21 +275,6 @@ public class RegisterFrame extends JFrame implements ActionListener {
             String Allergen = tf9.getText();
             String Blood = (String) cb1.getSelectedItem();
 
-//            Conf.account = Account;
-//            Conf.Fname = FName;
-//            Conf.Lname = LName;
-//            Conf.password = password1;
-//            Conf.gender = Gender;
-//            Conf.email = Email;
-//            Conf.pNumber = PNumber;
-//            Conf.address = Address;
-//            Conf.height = Double.parseDouble(Height);
-//            Conf.weight = Double.parseDouble(Weight);
-//            Conf.allergic = Boolean.valueOf(Allergic);
-//            Conf.NameAllergic = Allergen;
-//            Conf.bloodType = Blood;
-
-
             try {
                 FileWriter fw = new FileWriter("login.txt",true);
                 fw.write(Account+"\t"+password1+"\n");
