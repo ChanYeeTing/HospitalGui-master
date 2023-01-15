@@ -2,6 +2,7 @@ package hospitalgui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.ParseException;
 import javax.swing.*;
@@ -127,6 +128,8 @@ JComboBox c1;
              try {
                  new MakeAppointment();
              } catch (ParseException ex) {
+                 throw new RuntimeException(ex);
+             } catch (FileNotFoundException ex) {
                  throw new RuntimeException(ex);
              }
          }

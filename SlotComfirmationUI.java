@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class SlotComfirmationUI {
@@ -23,6 +25,7 @@ public class SlotComfirmationUI {
     static JPanel p1Div[];
     static JPanel p2;
     static JPanel p2Div[];
+    static JPanel p3;
 
 
     //JLabels
@@ -33,6 +36,11 @@ public class SlotComfirmationUI {
     static JLabel endTimeLabel;
     static JLabel reasonLabel;
     static JLabel remainingCharLabel;
+
+
+    //JButtons
+    static JButton p3Button1;
+    static JButton p3Button2;
 
 
 
@@ -53,6 +61,7 @@ public class SlotComfirmationUI {
     static String selectedDate;
     static String selectedStartTime;
     static String endTime;
+    static String selectedDoctor;
     static String appointmentDuration[] = {"15 mins", "30 mins", "1 hour"};
     static String appointmentReasons[] =  {"<Click to select>", "Yearly body checkup", "Sick", "Mental health checkup", "Other"};
     static String selectedDuration = appointmentDuration[0];
@@ -200,10 +209,12 @@ public class SlotComfirmationUI {
             public void insertUpdate(DocumentEvent e) {
                 if(!otherReasonTA.getText().equals("Enter your reason here...")) {
                     remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
+                    p3Button2.setVisible(true);
                     selectedReason = otherReasonTA.getText();
                 }
                 if(otherReasonTA.getDocument().getLength() > 200) {
                     remainingCharLabel.setForeground(Color.RED);
+                    p3Button2.setVisible(false);
                 }
             }
 
@@ -211,8 +222,11 @@ public class SlotComfirmationUI {
             public void removeUpdate(DocumentEvent e) {
                 selectedReason = otherReasonTA.getText();
                 remainingCharLabel.setText(("(" + otherReasonTA.getDocument().getLength()) + " / 200) characters");
-                if(otherReasonTA.getDocument().getLength() <= 200) {
+                if(otherReasonTA.getDocument().getLength() == 0)
+                      p3Button2.setVisible(false);
+                else if(otherReasonTA.getDocument().getLength() <= 200) {
                     remainingCharLabel.setForeground(Color.black);
+                    p3Button2.setVisible(true);
                 }
             }
 
@@ -220,6 +234,7 @@ public class SlotComfirmationUI {
             public void changedUpdate(DocumentEvent e) {
             }
         });
+
 
 
         //initialize otherReasonSP
@@ -239,13 +254,19 @@ public class SlotComfirmationUI {
 
                 if(selectedReason == appointmentReasons[0]) {
                     otherReasonSP.setVisible(false);
+                    p3Button2.setVisible(false);
                     remainingCharLabel.setVisible(false);
                 }
                 else if(selectedReason == appointmentReasons[appointmentReasons.length - 1]) {
                     otherReasonSP.setVisible(true);
                     remainingCharLabel.setVisible(true);
+                    if(otherReasonTA.getText().equals("Enter your reason here...") || otherReasonTA.getDocument().getLength() == 0 || otherReasonTA.getDocument().getLength() > 200)
+                        p3Button2.setVisible(false);
+                    else
+                        p3Button2.setVisible(true);
                 }
                 else {
+                    p3Button2.setVisible(true);
                     otherReasonSP.setVisible(false);
                     remainingCharLabel.setVisible(false);
                 }
@@ -259,14 +280,80 @@ public class SlotComfirmationUI {
         f.add(remainingCharLabel);
     }
 
+    public static void buildP3(int i , int j)
+    {
+        p3Button1 = new JButton("CANCEL");
+        p3Button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+            }
+        });
+        p3Button1.setFocusPainted(false);
+        p3Button1.setPreferredSize(new Dimension(100, 30));
+
+        p3Button2 = new JButton("OK");
+        p3Button2.setFocusPainted(false);
+        p3Button2.setPreferredSize(new Dimension(100, 30));
+        p3Button2.setVisible(false);
+        p3Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPendingMAP3(i, j);
+                insertAppointmentRequest();
+                f.dispose();
+            }
+        });
+
+        p3 = new JPanel();
+        p3.setBackground(Color.pink);
+        p3.setBounds(0, 410, 700, 60);
+        p3.add(p3Button1);
+        p3.add(p3Button2);
+
+        f.add(p3);
+    }
+
+    public static void addPendingMAP3(int i , int j)
+    {
+        int numSlot = 0;
+        if(selectedDuration.equals(appointmentDuration[0]))
+            numSlot = 1;
+        else if (selectedDuration.equals(appointmentDuration[1]))
+            numSlot = 2;
+        else if (selectedDuration.equals(appointmentDuration[2]))
+            numSlot = 4;
+
+        for(int k = 0; k < numSlot; k++)
+        {
+            MakeAppointment.slotButton[i][j].setText("Pending...");
+            MakeAppointment.slotButton[i][j].setBackground(Color.red);
+            MakeAppointment.p3Div[i][j+1].setBackground(Color.red);
+            i++;
+            if(i >= 36)
+                break;
+        }
+    }
+
+    public static void insertAppointmentRequest()
+    {
+        try {
+            FileWriter myWriter = new FileWriter("appointmentRequest.txt", true);
+            myWriter.write(PatientInfo.account + "\t" + selectedDoctor + "\t" + selectedDate + "\t" + selectedStartTime + "\t" + endTime + "\t" + selectedReason + "\n");
+            myWriter.close();
+        }catch(IOException e) {
+            System.out.println("Something went wrong");
+        }
+    }
+
 
     SlotComfirmationUI(int i , int j)
     {
-        //initialize selectedDate, selectedStartTime, endTime
+        //initialize selectedDate, selectedStartTime, endTime, selectedDoctor
         selectedDate = MakeAppointment.p2DateArray[j];
         selectedStartTime = MakeAppointment.l3[i].getText();
         endTime = MakeAppointment.l3[i+1].getText();
-
+        selectedDoctor = MakeAppointment.selectedDoctor;
 
         //initialize and set properties of f
         f = new JFrame("Slot confirm");
@@ -281,5 +368,6 @@ public class SlotComfirmationUI {
         buildP1();
         buildP2(i);
         buildReasonSelection();
+        buildP3(i, j);
     }
 }

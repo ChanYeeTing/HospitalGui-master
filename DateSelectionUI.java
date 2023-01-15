@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.time.LocalDate;
 
@@ -346,7 +347,11 @@ public class DateSelectionUI {
 
                 //rebuild p3
                 MakeAppointment.p3.setVisible(false);
-                MakeAppointment.buildP3();
+                try {
+                    MakeAppointment.buildP3();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 f.dispose();
             }
