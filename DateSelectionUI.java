@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.time.LocalDate;
 
 public class DateSelectionUI {
@@ -273,6 +274,18 @@ public class DateSelectionUI {
                     dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
                 }
             });
+            b[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    b[finalI].setBackground(new Color(249, 18, 168));
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    if(daySelected == finalI + 1)
+                        b[finalI].setBackground(new Color(249, 166, 18));
+                    else
+                        b[finalI].setBackground(new Color(46, 172, 221));
+                }
+            });
 
             p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
         }
@@ -292,9 +305,15 @@ public class DateSelectionUI {
         //initialize p3Button1
         p3Button1 = new JButton("CANCEL");
         p3Button1.setFont(new Font("Arial", Font.PLAIN, 15));
-        p3Button1.setForeground(Color.white);
+        p3Button1.setBackground(Color.white);
         p3Button1.setForeground(new Color(152, 160, 165));
         p3Button1.setPreferredSize(new Dimension(100, 40));
+        p3Button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+            }
+        });
         p3.add(p3Button1);
 
 
@@ -304,6 +323,34 @@ public class DateSelectionUI {
         p3Button2.setPreferredSize(new Dimension(100, 40));
         p3Button2.setBackground(Color.white);
         p3Button2.setBackground(new Color(0, 152, 203));
+        p3Button2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(249, 166, 18));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p3Button2.setBackground(new Color(0, 152, 203));
+            }
+        });
+        p3Button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //change the date shown on dateButton
+                MakeAppointment.dateButton.setText(dateSelected);
+                MakeAppointment.p2.setVisible(false);
+                try {
+                    MakeAppointment.buildP2(dateSelected);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                //rebuild p3
+                MakeAppointment.p3.setVisible(false);
+                MakeAppointment.buildP3();
+
+                f.dispose();
+            }
+        });
         p3.add(p3Button2);
 
         f.add(p3);
@@ -312,6 +359,8 @@ public class DateSelectionUI {
 
     DateSelectionUI()
     {
+        displacementAccumulator = 0;
+
         //set properties of f
         f = new JFrame("Select Date");
         f.setSize(700,500);
