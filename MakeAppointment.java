@@ -398,8 +398,8 @@ class MakeAppointment {
 
 
         //initialize backButton
-        backButton = new JButton("<--");
-        backButton.setFont(new Font("Calibri", Font.BOLD, 30));
+        backButton = new JButton("Back");
+        backButton.setFont(new Font("Calibri", Font.BOLD, 20));
         backButton.setFocusPainted(false);
         backButton.setBackground(new Color(231, 183, 183));
         backButton.setBounds(10, 10, 100, 40);
