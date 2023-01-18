@@ -25,6 +25,8 @@ public class GiveFeedbackUI {
     //JLabel
     JLabel headerLabel;
     JLabel feedbackTypeLabel;
+    JLabel remainingChar;
+    JLabel notification;
 
 
     //JButton
@@ -45,15 +47,19 @@ public class GiveFeedbackUI {
 
 
     //Variables or Arrays
-    String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
+    static String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
+    static String selectedFeedbackType = feedbackTypeArr[0];
 
     //build header panel
     public void buildHeaderPanel()
     {
+        //initialize headerPanel
         headerPanel = new JPanel();
         headerPanel.setBounds(0, 0, 1280, 100);
         headerPanel.setBackground(new Color(236, 181, 181));
         headerPanel.setLayout(new GridBagLayout());
+
+        //initialize headerLabel
         headerLabel = new JLabel("Give Feedback");
         headerLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 35));
         headerPanel.add(headerLabel);
@@ -69,11 +75,36 @@ public class GiveFeedbackUI {
         p1Button[0].setFocusPainted(false);
         p1Button[0].setBackground(new Color(169, 213, 121));
         p1Button[0].setPreferredSize(new Dimension(180, 60));
+        p1Button[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                new HospitalGUI();
+            }
+        });
 
         p1Button[1] = new JButton("SEND FEEDBACK");
         p1Button[1].setFocusPainted(false);
         p1Button[1].setBackground(new Color(169, 213, 121));
         p1Button[1].setPreferredSize(new Dimension(240, 60));
+        p1Button[1].setVisible(false);
+        p1Button[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    LocalDateTime now = LocalDateTime.now();
+
+                    FileWriter myWriter = new FileWriter("patientFeedback.txt", true);
+                    myWriter.write(PatientInfo.account + "\t" + selectedFeedbackType + "\t" + ta1.getText().replace('\n', ' ') + "\t" + dtf.format(now) + "\n");
+                    myWriter.close();
+                }catch(IOException ex) {
+                    System.out.println("Something went wrong");
+                }
+                f.dispose();
+                new HospitalGUI();
+            }
+        });
 
 
         //initialize p1
@@ -94,13 +125,30 @@ public class GiveFeedbackUI {
         feedbackTypeCB = new JComboBox<String>(feedbackTypeArr);
         feedbackTypeCB.setBounds(200, 130, 500, 30);
         feedbackTypeCB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        feedbackTypeCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedFeedbackType = (String) feedbackTypeCB.getSelectedItem();
+            }
+        });
 
+
+        //initialize feedbackTypeLabel
         feedbackTypeLabel = new JLabel("Feedback Type: ");
         feedbackTypeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
         feedbackTypeLabel.setBounds(50, 130, 300, 30);
 
         f.add(feedbackTypeLabel);
         f.add(feedbackTypeCB);
+    }
+
+    public void buildRemainingCharLabel()
+    {
+        //initialize remainingChar
+        remainingChar = new JLabel("(0 / 200) characters");
+        remainingChar.setBounds(1080, 540, 200, 20);
+
+        f.add(remainingChar);
     }
 
 
@@ -112,6 +160,53 @@ public class GiveFeedbackUI {
         ta1.setFont(new Font(Font.DIALOG, Font.PLAIN, 25));
         ta1.setText("Enter your feedback here...");
         ta1.setForeground(new Color(125, 125, 125));
+
+        ta1.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(ta1.getText().equals("Enter your feedback here..."))
+                    ta1.setText("");
+                ta1.setForeground(Color.black);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(ta1.getDocument().getLength() == 0) {
+                    ta1.setText("Enter your feedback here...");
+                    ta1.setForeground(new Color(125, 125, 125));
+                }
+            }
+        });
+
+        ta1.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(!ta1.getText().equals("Enter your feedback here...")) {
+                    remainingChar.setText(("(" + ta1.getDocument().getLength()) + " / 200) characters");
+                    p1Button[1].setVisible(true);
+                }
+                if(ta1.getDocument().getLength() > 200) {
+                    remainingChar.setForeground(Color.RED);
+                    p1Button[1].setVisible(false);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                remainingChar.setText(("(" + ta1.getDocument().getLength()) + " / 200) characters");
+                if(ta1.getDocument().getLength() == 0)
+                    p1Button[1].setVisible(false);
+                else if(ta1.getDocument().getLength() <= 200) {
+                    remainingChar.setForeground(Color.black);
+                    p1Button[1].setVisible(true);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
 
 
         //initialize sp1
@@ -131,9 +226,11 @@ public class GiveFeedbackUI {
 
         buildFeedBackTypeSelection();
 
-        buildP1();
-
         buildFeedbackTextArea();
+
+        buildRemainingCharLabel();
+
+        buildP1();
 
         f.setSize(1280,720);
         f.setLayout(null);
