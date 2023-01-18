@@ -35,7 +35,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
         p1 = new JPanel();
         p1.setLayout(new FlowLayout(FlowLayout.CENTER));
         l1= new JLabel("Registration");
-        l1.setFont(new Font("Calibri", Font.BOLD, 22));
+        l1.setFont(new Font("Times New Roman", Font.BOLD, 22));
 
         p2 = new JPanel();
         p2.setLayout(new FlowLayout(FlowLayout.CENTER));

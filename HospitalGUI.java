@@ -48,7 +48,7 @@ JComboBox c1;
         p1 =new JPanel();
         p1.setLayout(new FlowLayout(FlowLayout.CENTER));
         l1=new JLabel("Always Here For You");
-        l1.setFont(new Font("Calibri", Font.BOLD, 50));
+        l1.setFont(new Font("Lucida Handwriting", Font.BOLD, 50));
      
         p1.add(l1);
         
@@ -66,6 +66,12 @@ JComboBox c1;
         b7.addActionListener(this);
         b8 = new JButton("Give Feedback");
         b8.addActionListener(this);
+        b1.setBackground(Color.getHSBColor(255,240,22));
+        b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
+        b3.setBackground(Color.getHSBColor(255,240,22));
+        b4.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
+        b7.setBackground(Color.getHSBColor(255,240,22));
+        b8.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
         
         p2.add(b1);
         p2.add(b2);
@@ -107,14 +113,7 @@ JComboBox c1;
               view2();
                p4.setVisible(true);
          }
-//         else if(e.getSource()==b5){
-//             if(" ".equals(tf1.getText())){
-//              JOptionPane.showMessageDialog(this,"account not submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
-//             }
-//             else{
-//                 JOptionPane.showMessageDialog(this,"account submitted","confirmation", JOptionPane.PLAIN_MESSAGE);
-//             }
-//         }
+
          else if(e.getSource()==b6){
               JOptionPane.showMessageDialog(this,"doctor is not found","confirmation", JOptionPane.PLAIN_MESSAGE);
          }else if(e.getSource()==b2){
