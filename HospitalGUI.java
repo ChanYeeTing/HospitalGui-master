@@ -28,10 +28,10 @@ JComboBox c1;
     public  HospitalGUI(){
         
          this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         this.setSize(1100,300);
+         this.setSize(1200,350);
          this.setTitle("HospitalGUI");
          this.setVisible(true);
-         this.setLocation(120,100);
+         this.setLocation(40,100);
          this.setBackground(Color.DARK_GRAY);
         
         
