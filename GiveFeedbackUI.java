@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GiveFeedbackUI {
     //Jframe
@@ -22,6 +26,7 @@ public class GiveFeedbackUI {
     JLabel headerLabel;
     JLabel feedbackTypeLabel;
     JLabel remainingChar;
+    JLabel notification;
 
 
     //JButton
@@ -42,16 +47,19 @@ public class GiveFeedbackUI {
 
 
     //Variables or Arrays
-    String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
-    static String selectedFeedbackType;
+    static String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
+    static String selectedFeedbackType = feedbackTypeArr[0];
 
     //build header panel
     public void buildHeaderPanel()
     {
+        //initialize headerPanel
         headerPanel = new JPanel();
         headerPanel.setBounds(0, 0, 1280, 100);
         headerPanel.setBackground(new Color(236, 181, 181));
         headerPanel.setLayout(new GridBagLayout());
+
+        //initialize headerLabel
         headerLabel = new JLabel("Give Feedback");
         headerLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 35));
         headerPanel.add(headerLabel);
@@ -67,12 +75,36 @@ public class GiveFeedbackUI {
         p1Button[0].setFocusPainted(false);
         p1Button[0].setBackground(new Color(169, 213, 121));
         p1Button[0].setPreferredSize(new Dimension(180, 60));
+        p1Button[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                new HospitalGUI();
+            }
+        });
 
         p1Button[1] = new JButton("SEND FEEDBACK");
         p1Button[1].setFocusPainted(false);
         p1Button[1].setBackground(new Color(169, 213, 121));
         p1Button[1].setPreferredSize(new Dimension(240, 60));
         p1Button[1].setVisible(false);
+        p1Button[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    LocalDateTime now = LocalDateTime.now();
+
+                    FileWriter myWriter = new FileWriter("patientFeedback.txt", true);
+                    myWriter.write(PatientInfo.account + "\t" + selectedFeedbackType + "\t" + ta1.getText().replace('\n', ' ') + "\t" + dtf.format(now) + "\n");
+                    myWriter.close();
+                }catch(IOException ex) {
+                    System.out.println("Something went wrong");
+                }
+                f.dispose();
+                new HospitalGUI();
+            }
+        });
 
 
         //initialize p1
@@ -100,6 +132,8 @@ public class GiveFeedbackUI {
             }
         });
 
+
+        //initialize feedbackTypeLabel
         feedbackTypeLabel = new JLabel("Feedback Type: ");
         feedbackTypeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
         feedbackTypeLabel.setBounds(50, 130, 300, 30);
@@ -110,8 +144,10 @@ public class GiveFeedbackUI {
 
     public void buildRemainingCharLabel()
     {
+        //initialize remainingChar
         remainingChar = new JLabel("(0 / 200) characters");
         remainingChar.setBounds(1080, 540, 200, 20);
+
         f.add(remainingChar);
     }
 
