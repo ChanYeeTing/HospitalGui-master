@@ -31,7 +31,7 @@ public class Login extends JFrame implements ActionListener {
         p1 = new JPanel();
         l1= new JLabel("Login");
         p1.setLayout(new FlowLayout(FlowLayout.CENTER));
-        l1.setFont(new Font("Calibri", Font.BOLD, 40));
+        l1.setFont(new Font("Times New Roman", Font.BOLD, 40));
 
         p2 = new JPanel();
         l2= new JLabel("Account    ");
@@ -53,7 +53,7 @@ public class Login extends JFrame implements ActionListener {
         b1.addActionListener(this);
         b2.addActionListener(this);
         b1.setBackground(Color.getHSBColor(255,240,22));
-        b2.setBackground(Color.getHSBColor(255,240,22));
+        b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
 
         p1.add(l1);
         p2.add(l2);

@@ -35,8 +35,8 @@ public class PatientInfo extends JFrame implements ActionListener {
         catch (Exception ex) { }
 
         this.setTitle("Account Information");
-        this.setLocation(190, 40);
-        this.setSize(800,500);
+        this.setLocation(220, 40);
+        this.setSize(600,500);
         this.setBackground(Color.getHSBColor(5, 90, 80));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
@@ -45,9 +45,9 @@ public class PatientInfo extends JFrame implements ActionListener {
 
         l0 = l= new JLabel(" ");
         l= new JLabel("Account ");
-        l.setFont(new Font("Calibri", Font.BOLD, 25));
+        l.setFont(new Font("Times New Roman", Font.BOLD, 28));
         l1= new JLabel("Information");
-        l1.setFont(new Font("Calibri", Font.BOLD, 25));
+        l1.setFont(new Font("Times New Roman", Font.BOLD, 28));
         b1 = new JButton("Back");
         b1.setBackground(Color.getHSBColor(255,240,22));
 
