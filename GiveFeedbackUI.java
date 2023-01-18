@@ -8,10 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class GiveFeedbackUI {
     //Jframe
@@ -25,6 +21,7 @@ public class GiveFeedbackUI {
     //JLabel
     JLabel headerLabel;
     JLabel feedbackTypeLabel;
+    JLabel remainingChar;
 
 
     //JButton
@@ -46,6 +43,7 @@ public class GiveFeedbackUI {
 
     //Variables or Arrays
     String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
+    static String selectedFeedbackType;
 
     //build header panel
     public void buildHeaderPanel()
@@ -94,6 +92,12 @@ public class GiveFeedbackUI {
         feedbackTypeCB = new JComboBox<String>(feedbackTypeArr);
         feedbackTypeCB.setBounds(200, 130, 500, 30);
         feedbackTypeCB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        feedbackTypeCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedFeedbackType = (String) feedbackTypeCB.getSelectedItem();
+            }
+        });
 
         feedbackTypeLabel = new JLabel("Feedback Type: ");
         feedbackTypeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -101,6 +105,13 @@ public class GiveFeedbackUI {
 
         f.add(feedbackTypeLabel);
         f.add(feedbackTypeCB);
+    }
+
+    public void buildRemainingCharLabel()
+    {
+        remainingChar = new JLabel("(0 / 200) characters");
+        remainingChar.setBounds(1080, 540, 200, 20);
+        f.add(remainingChar);
     }
 
 
@@ -112,6 +123,53 @@ public class GiveFeedbackUI {
         ta1.setFont(new Font(Font.DIALOG, Font.PLAIN, 25));
         ta1.setText("Enter your feedback here...");
         ta1.setForeground(new Color(125, 125, 125));
+
+        ta1.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(ta1.getText().equals("Enter your feedback here..."))
+                    ta1.setText("");
+                ta1.setForeground(Color.black);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(ta1.getDocument().getLength() == 0) {
+                    ta1.setText("Enter your feedback here...");
+                    ta1.setForeground(new Color(125, 125, 125));
+                }
+            }
+        });
+
+        ta1.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(!ta1.getText().equals("Enter your feedback here...")) {
+                    remainingChar.setText(("(" + ta1.getDocument().getLength()) + " / 200) characters");
+                    p1Button[1].setVisible(true);
+                }
+                if(ta1.getDocument().getLength() > 200) {
+                    remainingChar.setForeground(Color.RED);
+                    p1Button[1].setVisible(false);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                remainingChar.setText(("(" + ta1.getDocument().getLength()) + " / 200) characters");
+                if(ta1.getDocument().getLength() == 0)
+                    p1Button[1].setVisible(false);
+                else if(ta1.getDocument().getLength() <= 200) {
+                    remainingChar.setForeground(Color.black);
+                    p1Button[1].setVisible(true);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
 
 
         //initialize sp1
@@ -131,9 +189,11 @@ public class GiveFeedbackUI {
 
         buildFeedBackTypeSelection();
 
-        buildP1();
-
         buildFeedbackTextArea();
+
+        buildRemainingCharLabel();
+
+        buildP1();
 
         f.setSize(1280,720);
         f.setLayout(null);
