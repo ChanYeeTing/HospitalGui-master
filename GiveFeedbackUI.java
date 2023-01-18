@@ -72,6 +72,7 @@ public class GiveFeedbackUI {
         p1Button[1].setFocusPainted(false);
         p1Button[1].setBackground(new Color(169, 213, 121));
         p1Button[1].setPreferredSize(new Dimension(240, 60));
+        p1Button[1].setVisible(false);
 
 
         //initialize p1
