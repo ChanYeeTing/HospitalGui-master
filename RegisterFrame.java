@@ -93,7 +93,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
         b1 = new JButton("Register");
         b2 = new JButton("Cancel");
         b1.setBackground(Color.getHSBColor(255,240,22));
-        b2.setBackground(Color.getHSBColor(255,240,22));
+        b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
 
         p3 = new JPanel();
         p3.setLayout(new FlowLayout(FlowLayout.CENTER));
