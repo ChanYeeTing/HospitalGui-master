@@ -137,6 +137,7 @@ JComboBox c1;
              }
          }else if (e.getSource() == b8)
          {
+             this.dispose();
              new GiveFeedbackUI();
          }
     }
