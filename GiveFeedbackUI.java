@@ -1,9 +1,13 @@
 package hospitalgui;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -29,6 +33,15 @@ public class GiveFeedbackUI {
 
     //JComboBox
     JComboBox<String> feedbackTypeCB;
+
+
+
+    //JTextArea
+    JTextArea ta1;
+
+
+    //JScrollPane
+    JScrollPane sp1;
 
 
     //Variables or Arrays
@@ -91,6 +104,25 @@ public class GiveFeedbackUI {
     }
 
 
+    public void buildFeedbackTextArea() {
+        //initialize ta1
+        ta1 = new JTextArea();
+        ta1.setLineWrap(true);
+        ta1.setWrapStyleWord(true);
+        ta1.setFont(new Font(Font.DIALOG, Font.PLAIN, 25));
+        ta1.setText("Enter your feedback here...");
+        ta1.setForeground(new Color(125, 125, 125));
+
+
+        //initialize sp1
+        sp1 = new JScrollPane (ta1, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp1.setBounds(50, 180, 1160, 360);
+
+
+        f.add(sp1);
+    }
+
+
     public GiveFeedbackUI()
     {
         f = new JFrame("Give Feedback");
@@ -101,6 +133,7 @@ public class GiveFeedbackUI {
 
         buildP1();
 
+        buildFeedbackTextArea();
 
         f.setSize(1280,720);
         f.setLayout(null);
