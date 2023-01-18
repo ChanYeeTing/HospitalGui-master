@@ -20,10 +20,19 @@ public class GiveFeedbackUI {
 
     //JLabel
     JLabel headerLabel;
+    JLabel feedbackTypeLabel;
 
 
     //JButton
     JButton p1Button[];
+
+
+    //JComboBox
+    JComboBox<String> feedbackTypeCB;
+
+
+    //Variables or Arrays
+    String feedbackTypeArr[] = {"Bugs Report", "Improvement", "Others"};
 
     //build header panel
     public void buildHeaderPanel()
@@ -65,11 +74,31 @@ public class GiveFeedbackUI {
     }
 
 
+    //build feedback type selection drop down list
+    public void buildFeedBackTypeSelection()
+    {
+        //initialize feedbackTypeCB
+        feedbackTypeCB = new JComboBox<String>(feedbackTypeArr);
+        feedbackTypeCB.setBounds(200, 130, 500, 30);
+        feedbackTypeCB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+
+        feedbackTypeLabel = new JLabel("Feedback Type: ");
+        feedbackTypeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        feedbackTypeLabel.setBounds(50, 130, 300, 30);
+
+        f.add(feedbackTypeLabel);
+        f.add(feedbackTypeCB);
+    }
+
+
     public GiveFeedbackUI()
     {
         f = new JFrame("Give Feedback");
 
         buildHeaderPanel();
+
+        buildFeedBackTypeSelection();
+
         buildP1();
 
 
