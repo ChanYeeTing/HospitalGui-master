@@ -18,7 +18,7 @@ JList list1;
 
 JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 
-JButton b1,b2,b3,b4,b5,b6, b7;
+JButton b1,b2,b3,b4,b5,b6, b7, b8;
 
 JComboBox c1;
 
@@ -64,12 +64,15 @@ JComboBox c1;
         b4.addActionListener(this);
         b7= new JButton("Make Appointment");
         b7.addActionListener(this);
+        b8 = new JButton("Give Feedback");
+        b8.addActionListener(this);
         
         p2.add(b1);
         p2.add(b2);
         p2.add(b3);
         p2.add(b4);
         p2.add(b7);
+        p2.add(b8);
         
         p.add(p3);
         p.add(p1);
@@ -132,6 +135,9 @@ JComboBox c1;
              } catch (FileNotFoundException ex) {
                  throw new RuntimeException(ex);
              }
+         }else if (e.getSource() == b8)
+         {
+             new GiveFeedbackUI();
          }
     }
        
