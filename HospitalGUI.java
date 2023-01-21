@@ -1,26 +1,17 @@
 package hospitalgui;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.text.ParseException;
 import javax.swing.*;
+
 public class HospitalGUI extends JFrame implements ActionListener{
-
-
 
 JPanel p,p1,p2,p3,p4;
 
 JLabel l1;
 
 JButton b1,b2,b3,b4, b7, b8;
-
-
-
-
-    JComboBox c1;
-
 
 
     public  HospitalGUI(){
@@ -42,7 +33,6 @@ JButton b1,b2,b3,b4, b7, b8;
 
 
 
-
         p1 =new JPanel();
         p1.setLayout(new FlowLayout(FlowLayout.CENTER));
         l1=new JLabel("Always Here For You");
@@ -56,9 +46,9 @@ JButton b1,b2,b3,b4, b7, b8;
         b1.addActionListener(this);
         b2=new JButton("Hospital Departments");
         b2.addActionListener(this);
-        b3=new JButton("View drugs details");
+        b3=new JButton("View Drugs Details");
         b3.addActionListener(this);
-        b4=new JButton("View doctor details");
+        b4=new JButton("View Doctor Details");
         b4.addActionListener(this);
         b7= new JButton("Make Appointment");
         b7.addActionListener(this);
