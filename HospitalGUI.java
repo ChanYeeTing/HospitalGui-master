@@ -58,9 +58,9 @@ JComboBox c1;
         b1.addActionListener(this);
         b2=new JButton("Hospital Departments");
         b2.addActionListener(this);
-        b3=new JButton("View Products & Services");
+        b3=new JButton("View drugs details");
         b3.addActionListener(this);
-        b4=new JButton("Find A Doctor");
+        b4=new JButton("View doctor details");
         b4.addActionListener(this);
         b7= new JButton("Make Appointment");
         b7.addActionListener(this);
@@ -110,20 +110,32 @@ JComboBox c1;
 
          }else if(e.getSource()==b4){
               p4.removeAll();
-              view2();
-               p4.setVisible(true);
+             try {
+                 new Doctor();
+             } catch (FileNotFoundException ex) {
+                 throw new RuntimeException(ex);
+             }
+             p4.setVisible(true);
          }
 
          else if(e.getSource()==b6){
               JOptionPane.showMessageDialog(this,"doctor is not found","confirmation", JOptionPane.PLAIN_MESSAGE);
          }else if(e.getSource()==b2){
               p4.removeAll();
-               view3();
-               p4.setVisible(true);
+             try {
+                 new Department();
+             } catch (FileNotFoundException ex) {
+                 throw new RuntimeException(ex);
+             }
+             p4.setVisible(true);
          }else if(e.getSource()==b3){
               p4.removeAll();
-              view4();
-               p4.setVisible(true);
+             try {
+                 new Drug();
+             } catch (FileNotFoundException ex) {
+                 throw new RuntimeException(ex);
+             }
+             p4.setVisible(true);
          }else if(e.getSource() == b7)
          {
              this.dispose();
