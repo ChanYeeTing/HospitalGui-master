@@ -80,12 +80,35 @@ class MakeAppointment {
 
 
     //Arrays
-    static String doctor [] = {"Ali", "James", "Sarah", "Mary Jane"};//doctor name array
+    static String doctor [];//doctor name array
     static String dayTypeArr [] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};//day type array
     static String p2DateArray[];
 
-    static String selectedDoctor = doctor[0];
+    static String selectedDoctor;
 
+    //get list of doctor name from text file to an array
+    public static void getDoctorNameList() throws FileNotFoundException {
+        File myObj = new File("Doctor's details.txt");
+        Scanner myReader = new Scanner(myObj);
+        myReader.useDelimiter("\t");
+
+        int numLines = 0;
+        while(myReader.hasNextLine())
+        {
+            myReader.nextLine();
+            numLines++;
+        }
+
+
+        doctor = new String[numLines];
+        String temp[];
+        myReader =new Scanner(myObj);
+        for(int i = 0; myReader.hasNextLine(); i++)
+        {
+            temp = (myReader.nextLine()).split("\t");
+            doctor[i] = temp[0].substring(0, temp[0].length()-1);
+        }
+    }
 
     //function to get number of days at specific month
     public static int getNumOfDays(int monthInt, int yearInt)
@@ -383,6 +406,10 @@ class MakeAppointment {
     public MakeAppointment() throws ParseException, FileNotFoundException {
         //create new frame
         f= new JFrame("Make Appointment");
+
+        //get list of doctor name from text file and initialize selectedDoctor to the first name
+        getDoctorNameList();
+        selectedDoctor = doctor[0];
 
         //initialize headerLabel
         headerLabel = new JLabel("Make Appointment");
