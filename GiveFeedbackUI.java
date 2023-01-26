@@ -26,7 +26,6 @@ public class GiveFeedbackUI {
     JLabel headerLabel;
     JLabel feedbackTypeLabel;
     JLabel remainingChar;
-    JLabel notification;
 
 
     //JButton
@@ -69,12 +68,14 @@ public class GiveFeedbackUI {
     //build p1
     public void buildP1()
     {
+
         //initialize p1Button
         p1Button = new JButton[2];
-        p1Button[0] = new JButton("CANCEL");
+        p1Button[0] = new JButton("Back");
         p1Button[0].setFocusPainted(false);
-        p1Button[0].setBackground(new Color(169, 213, 121));
-        p1Button[0].setPreferredSize(new Dimension(180, 60));
+        p1Button[0].setFont(new Font("Calibri", Font.BOLD, 20));
+        p1Button[0].setBackground(new Color(231, 183, 183));
+        p1Button[0].setBounds(10, 10, 100, 40);
         p1Button[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,6 +83,7 @@ public class GiveFeedbackUI {
                 new HospitalGUI();
             }
         });
+        f.add(p1Button[0]);
 
         p1Button[1] = new JButton("SEND FEEDBACK");
         p1Button[1].setFocusPainted(false);
@@ -111,7 +113,6 @@ public class GiveFeedbackUI {
         p1 = new JPanel();
         p1.setBounds(0, 590, 1280, 100);
         p1.setBackground(new Color(236, 181, 181));
-        p1.add(p1Button[0]);
         p1.add(p1Button[1]);
 
         f.add(p1);
