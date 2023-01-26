@@ -1,5 +1,4 @@
 package hospitalgui;
-import sun.rmi.runtime.Log;
 
 import java.awt.*;
 import java.awt.event.*;
