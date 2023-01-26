@@ -7,23 +7,12 @@ import javax.swing.*;
 
 public class HospitalGUI extends JFrame implements ActionListener{
 
-JPanel p,p1,p2,p3,p4;
+    JPanel p,p1,p2,p3,p4;
 
-JLabel l1;
+    JLabel l1;
 
-JButton b1,b2,b3,b4, b7, b8;
+    JButton b1,b2,b3,b4, b7, b8;
 
-<<<<<<< HEAD
-    JTextField tf1,tf2,tf3,tf4,tf5,tf6;
-
-    JButton b1,b2,b3,b4,b5,b6, b7, b8, b9;
-
-    JComboBox c1;
-
-
-    String a[]={"Surgeon","Pediatrician","Psychiatrist","Cardiologist","Dermatologist"};
-=======
->>>>>>> main
 
     public  HospitalGUI(){
 
@@ -40,7 +29,6 @@ JButton b1,b2,b3,b4, b7, b8;
 
 
         p3 =new JPanel();
-        p3.setLayout(new FlowLayout(FlowLayout.LEFT));
         p4 =new JPanel();
 
 
@@ -54,8 +42,6 @@ JButton b1,b2,b3,b4, b7, b8;
 
         p2 =new JPanel();
         p2.setLayout(new FlowLayout(FlowLayout.CENTER,40,40));
-        b9 = new JButton("Log out");
-        b9.addActionListener(this);
         b1=new JButton("Account Information");
         b1.addActionListener(this);
         b2=new JButton("Hospital Departments");
@@ -68,7 +54,6 @@ JButton b1,b2,b3,b4, b7, b8;
         b7.addActionListener(this);
         b8 = new JButton("Give Feedback");
         b8.addActionListener(this);
-        b9.setBackground(Color.getHSBColor(255,240,22));
         b1.setBackground(Color.getHSBColor(255,240,22));
         b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
         b3.setBackground(Color.getHSBColor(255,240,22));
@@ -82,7 +67,6 @@ JButton b1,b2,b3,b4, b7, b8;
         p2.add(b4);
         p2.add(b7);
         p2.add(b8);
-        p3.add(b9);
 
         p.add(p3);
         p.add(p1);
@@ -107,40 +91,31 @@ JButton b1,b2,b3,b4, b7, b8;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
+
+
         if(e.getSource()==b1){
             this.dispose();
             new PatientInfo();
-=======
 
-        
-         if(e.getSource()==b1){
-           this.dispose();
-           new PatientInfo();
->>>>>>> main
-
-         }else if(e.getSource()==b4){
-             try {
-                 this.dispose();
-                 new Doctor();
-             } catch (FileNotFoundException ex) {
-                 throw new RuntimeException(ex);
-             }
-         }
-
-<<<<<<< HEAD
-        else if(e.getSource()==b6){
-            JOptionPane.showMessageDialog(this,"doctor is not found","confirmation", JOptionPane.PLAIN_MESSAGE);
-        }else if(e.getSource()==b2){
-            this.dispose();
+        }else if(e.getSource()==b4){
             try {
+                this.dispose();
+                new Doctor();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        else if(e.getSource()==b2){
+            try {
+                this.dispose();
                 new Department();
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
         }else if(e.getSource()==b3){
-            this.dispose();
             try {
+                this.dispose();
                 new Drug();
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
@@ -159,42 +134,7 @@ JButton b1,b2,b3,b4, b7, b8;
         {
             this.dispose();
             new GiveFeedbackUI();
-        }else if (e.getSource() == b9)
-        {
-            this.dispose();
-            new Login();
         }
-=======
-         else if(e.getSource()==b2){
-             try {
-                 this.dispose();
-                 new Department();
-             } catch (FileNotFoundException ex) {
-                 throw new RuntimeException(ex);
-             }
-         }else if(e.getSource()==b3){
-             try {
-                 this.dispose();
-                 new Drug();
-             } catch (FileNotFoundException ex) {
-                 throw new RuntimeException(ex);
-             }
-         }else if(e.getSource() == b7)
-         {
-             this.dispose();
-             try {
-                 new MakeAppointment();
-             } catch (ParseException ex) {
-                 throw new RuntimeException(ex);
-             } catch (FileNotFoundException ex) {
-                 throw new RuntimeException(ex);
-             }
-         }else if (e.getSource() == b8)
-         {
-             this.dispose();
-             new GiveFeedbackUI();
-         }
->>>>>>> main
     }
 
 }
