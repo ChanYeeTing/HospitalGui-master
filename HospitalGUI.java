@@ -13,9 +13,6 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
     JLabel l1,l2,l3,l4,l5,l6,l7;
 
-    JList list2;
-    JList list1;
-
     JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 
     JButton b1,b2,b3,b4,b5,b6, b7, b8;
@@ -31,7 +28,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
         this.setSize(1200,350);
         this.setTitle("HospitalGUI");
         this.setVisible(true);
-        this.setLocation(40,100);
+        this.setLocationRelativeTo(null);
         this.setBackground(Color.DARK_GRAY);
 
 
