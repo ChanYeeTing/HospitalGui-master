@@ -15,7 +15,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
     JTextField tf1,tf2,tf3,tf4,tf5,tf6;
 
-    JButton b1,b2,b3,b4,b5,b6, b7, b8;
+    JButton b1,b2,b3,b4,b5,b6, b7, b8, b9;
 
     JComboBox c1;
 
@@ -37,6 +37,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
 
         p3 =new JPanel();
+        p3.setLayout(new FlowLayout(FlowLayout.LEFT));
         p4 =new JPanel();
 
 
@@ -51,6 +52,8 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
         p2 =new JPanel();
         p2.setLayout(new FlowLayout(FlowLayout.CENTER,40,40));
+        b9 = new JButton("Log out");
+        b9.addActionListener(this);
         b1=new JButton("Account Information");
         b1.addActionListener(this);
         b2=new JButton("Hospital Departments");
@@ -63,6 +66,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
         b7.addActionListener(this);
         b8 = new JButton("Give Feedback");
         b8.addActionListener(this);
+        b9.setBackground(Color.getHSBColor(255,240,22));
         b1.setBackground(Color.getHSBColor(255,240,22));
         b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
         b3.setBackground(Color.getHSBColor(255,240,22));
@@ -76,6 +80,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
         p2.add(b4);
         p2.add(b7);
         p2.add(b8);
+        p3.add(b9);
 
         p.add(p3);
         p.add(p1);
@@ -100,7 +105,6 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if(e.getSource()==b1){
             this.dispose();
             new PatientInfo();
@@ -144,6 +148,10 @@ public class HospitalGUI extends JFrame implements ActionListener{
         {
             this.dispose();
             new GiveFeedbackUI();
+        }else if (e.getSource() == b9)
+        {
+            this.dispose();
+            new Login();
         }
     }
 
