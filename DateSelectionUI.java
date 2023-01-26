@@ -42,6 +42,7 @@ public class DateSelectionUI {
 
 
     //Variables or Arrays
+    static int dayMonthYearToday[];
     static int daySelected;//store day of month selected
     static int monthSelected;//store month selected
     static int yearSelected;//store year selected
@@ -79,9 +80,10 @@ public class DateSelectionUI {
     public static void buildP1()
     {
         //get information of calendar
-        daySelected = myDateObj.getDayOfMonth();
-        monthSelected = myDateObj.getMonthValue();
-        yearSelected = myDateObj.getYear();
+        dayMonthYearToday = new int[3];
+        dayMonthYearToday[0] = daySelected = myDateObj.getDayOfMonth();
+        dayMonthYearToday[1] = monthSelected = myDateObj.getMonthValue();
+        dayMonthYearToday[2] = yearSelected = myDateObj.getYear();
 
 
 
@@ -116,8 +118,12 @@ public class DateSelectionUI {
                     yearSelected--;
                 }
 
-                //every time move to previous month set default day selected is 1
-                daySelected = 1;
+                if(dayMonthYearToday[1] == monthSelected && dayMonthYearToday[2] == yearSelected)
+                {
+                    daySelected = dayMonthYearToday[0];
+                    bPreviousMonth.setVisible(false);
+                }else
+                    daySelected = 1;
 
                 //reset monthLabel
                 monthLabel.setText(monthStr[monthSelected -1] + " " + yearSelected);
@@ -133,9 +139,12 @@ public class DateSelectionUI {
                 f.add(p1);
             }
         });
+        if(dayMonthYearToday[1] == monthSelected && dayMonthYearToday[2] == yearSelected)
+            bPreviousMonth.setVisible(false);
 
 
-        //initialize button for next month
+
+            //initialize button for next month
         bNextMonth = new JButton(">");
         bNextMonth.setForeground(Color.white);
         bNextMonth.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 35));
@@ -145,6 +154,7 @@ public class DateSelectionUI {
         bNextMonth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                bPreviousMonth.setVisible(true);
                 //get the displacement needed to rebuild p2
                 int displacement = MakeAppointment.getNumOfDays(monthSelected, yearSelected);
 
@@ -270,38 +280,47 @@ public class DateSelectionUI {
                 b[i].setBackground(new Color(249, 166, 18));
                 b[daySelected -1].setForeground(Color.white);
             }
-            else
+            else if(i > daySelected -1)
                 b[i].setBackground(new Color(46, 172, 221));
+            else
+            {
+                b[i].setBackground(new Color(46, 172, 221));
+                b[i].setText("X");
+                b[i].setEnabled(false);
+            }
+
             b[i].setFont(new Font("Arial", Font.PLAIN, 20));
             int finalI = i;
-            b[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    //set background color of last selected button to blue and font color to black
-                    b[daySelected -1].setBackground(new Color(46, 172, 221));//let the last clicked button return its green color
-                    b[daySelected -1].setForeground(Color.black);
+            if(i >= daySelected -1) {
+                b[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //set background color of last selected button to blue and font color to black
+                        b[daySelected - 1].setBackground(new Color(46, 172, 221));//let the last clicked button return its green color
+                        b[daySelected - 1].setForeground(Color.black);
 
-                    //set background color of current selected button to orange and font color to white
-                    b[finalI].setBackground(new Color(249, 166, 18));
-                    b[finalI].setForeground(Color.white);
-
-                    //reset value of daySelected and dateSelected
-                    daySelected = finalI + 1;
-                    dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
-                }
-            });
-            b[i].addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    b[finalI].setBackground(new Color(249, 18, 168));
-                }
-
-                public void mouseExited(java.awt.event.MouseEvent evt) {
-                    if(daySelected == finalI + 1)
+                        //set background color of current selected button to orange and font color to white
                         b[finalI].setBackground(new Color(249, 166, 18));
-                    else
-                        b[finalI].setBackground(new Color(46, 172, 221));
-                }
-            });
+                        b[finalI].setForeground(Color.white);
+
+                        //reset value of daySelected and dateSelected
+                        daySelected = finalI + 1;
+                        dateSelected = "" + daySelected + "/" + monthSelected + "/" + yearSelected;
+                    }
+                });
+                b[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        b[finalI].setBackground(new Color(249, 18, 168));
+                    }
+
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        if (daySelected == finalI + 1)
+                            b[finalI].setBackground(new Color(249, 166, 18));
+                        else
+                            b[finalI].setBackground(new Color(46, 172, 221));
+                    }
+                });
+            }
 
             p2Div[day1DayTypeArrIndex + displacementAccumulator + 7 + i].add(b[i]);//+7 because the first row is used by the day type label already
         }
