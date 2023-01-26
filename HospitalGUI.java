@@ -1,4 +1,6 @@
 package hospitalgui;
+import sun.rmi.runtime.Log;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
@@ -11,7 +13,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
     JLabel l1;
 
-    JButton b1,b2,b3,b4, b7, b8;
+    JButton b1,b2,b3,b4, b7, b8, b9;
 
 
     public  HospitalGUI(){
@@ -29,6 +31,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
 
 
         p3 =new JPanel();
+        p3.setLayout(new FlowLayout(FlowLayout.LEFT));
         p4 =new JPanel();
 
 
@@ -54,6 +57,9 @@ public class HospitalGUI extends JFrame implements ActionListener{
         b7.addActionListener(this);
         b8 = new JButton("Give Feedback");
         b8.addActionListener(this);
+        b9 = new JButton("Log out");
+        b9.addActionListener(this);
+        b9.setBackground(Color.getHSBColor(255,240,22));
         b1.setBackground(Color.getHSBColor(255,240,22));
         b2.setBackground(Color.getHSBColor((float) 270.67, (float) 0.3, (float) 0.89));
         b3.setBackground(Color.getHSBColor(255,240,22));
@@ -67,6 +73,7 @@ public class HospitalGUI extends JFrame implements ActionListener{
         p2.add(b4);
         p2.add(b7);
         p2.add(b8);
+        p3.add(b9);
 
         p.add(p3);
         p.add(p1);
@@ -134,6 +141,10 @@ public class HospitalGUI extends JFrame implements ActionListener{
         {
             this.dispose();
             new GiveFeedbackUI();
+        }else if (e.getSource() == b9)
+        {
+            this.dispose();
+            new Login();
         }
     }
 
