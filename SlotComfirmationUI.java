@@ -324,11 +324,13 @@ public class SlotComfirmationUI {
 
         for(int k = 0; k < numSlot; k++)
         {
-            MakeAppointment.slotButton[i][j].setText("Pending...");
-            MakeAppointment.slotButton[i][j].setBackground(Color.red);
-            MakeAppointment.p3Div[i][j+1].setBackground(Color.red);
-            i++;
-            if(i >= 36)
+            if(MakeAppointment.slotButton[i][j] != null) {
+                MakeAppointment.slotButton[i][j].setText("Pending...");
+                MakeAppointment.slotButton[i][j].setBackground(Color.red);
+                MakeAppointment.p3Div[i][j + 1].setBackground(Color.red);
+                i++;
+            }
+            if (i >= 36)
                 break;
         }
     }
