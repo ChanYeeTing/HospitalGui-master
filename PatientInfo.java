@@ -35,8 +35,8 @@ public class PatientInfo extends JFrame implements ActionListener {
         catch (Exception ex) { }
 
         this.setTitle("Account Information");
-        this.setLocation(220, 40);
         this.setSize(600,500);
+        this.setLocationRelativeTo(null);
         this.setBackground(Color.getHSBColor(5, 90, 80));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);

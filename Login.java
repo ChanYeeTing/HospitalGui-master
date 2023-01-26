@@ -19,8 +19,8 @@ public class Login extends JFrame implements ActionListener {
     public Login(){
         super("Login");
         this.setTitle("Login");
-        this.setLocation(500,100);
         this.setSize(350,350);
+        this.setLocationRelativeTo(null);
         this.setBackground(Color.getHSBColor(5,90,80));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
